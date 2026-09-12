@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CIATN Institute — Clinical Cosmetology, Trichology & Aesthetic Medicine Training, Pune</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --navy: #182451;
+      --navy-deep: #0f1738;
+      --teal: #1c3f3e;
+      --saffron: #e2811f;
+      --saffron-deep: #c56c14;
+      --gold: #c39a3f;
+      --paper: #f8f5ee;
+      --paper-2: #efeadd;
+      --ink: #22262d;
+      --ink-soft: #565b63;
+      --line: #e2ddd0;
+      --white: #ffffff;
+      --radius: 6px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      margin: 0;
+      line-height: 1.12;
+      color: var(--navy-deep);
+      letter-spacing: -0.01em;
+    }
+
+    p {
+      margin: 0;
+      color: var(--ink-soft);
+      line-height: 1.65;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    /* buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 26px;
+      border-radius: 999px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform .15s ease, box-shadow .15s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--saffron);
+      color: #fff;
+      box-shadow: 0 6px 18px rgba(226, 129, 31, .28);
+    }
+
+    .btn-primary:hover {
+      background: var(--saffron-deep);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border-color: rgba(255, 255, 255, .5);
+      color: #fff;
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, .12);
+    }
+
+    .btn-navy {
+      background: var(--navy);
+      color: #fff;
+    }
+
+    .btn-navy:hover {
+      background: var(--navy-deep);
+    }
+
+    /* nav */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(248, 245, 238, .92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 32px;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand img {
+      height: 40px;
+      width: auto;
+    }
+
+    .brand-name {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: 19px;
+      color: var(--navy-deep);
+    }
+
+    .brand-name span {
+      color: var(--saffron);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-size: 14.5px;
+      font-weight: 500;
+      color: var(--ink);
+      opacity: .85;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+      color: var(--saffron-deep);
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .burger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+    }
+
+    .burger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--navy-deep);
+      margin: 5px 0;
+    }
+
+    /* hero */
+    .hero {
+      background: var(--navy-deep);
+      position: relative;
+      overflow: hidden;
+      padding: 64px 0 0;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(600px 380px at 85% 10%, rgba(226, 129, 31, .18), transparent 60%),
+        radial-gradient(500px 400px at 10% 90%, rgba(28, 63, 62, .55), transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #f0c988;
+      font-size: 13.5px;
+      font-weight: 600;
+      border: 1px solid rgba(240, 201, 136, .35);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 22px;
+    }
+
+    .hero-eyebrow .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--saffron);
+    }
+
+    .hero h1 {
+      color: #fff;
+      font-size: clamp(34px, 4.2vw, 54px);
+      max-width: 11.5ch;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: #f0c988;
+      font-weight: 500;
+    }
+
+    .hero p.lead {
+      color: #c9cede;
+      font-size: 17px;
+      max-width: 46ch;
+      margin-top: 22px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 34px;
+      margin-top: 44px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .hero-stat b {
+      display: block;
+      font-family: 'Fraunces', serif;
+      font-size: 26px;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .hero-stat span {
+      font-size: 13px;
+      color: #9aa1b5;
+    }
+
+    .hero-visual {
+      position: relative;
+      padding: 20px 0 60px;
+    }
+
+    .hero-photo {
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .55);
+      border: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .hero-photo img {
+      width: 100%;
+      height: 340px;
+      object-fit: cover;
+      object-position: center 30%;
+    }
+
+    .float-card {
+      position: absolute;
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px 18px;
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, .35);
+      max-width: 220px;
+    }
+
+    .float-card.recognition {
+      top: -26px;
+      left: -18px;
+    }
+
+    .float-card.recognition .badge-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .float-card.recognition .badge-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .float-card.recognition b {
+      font-size: 13.5px;
+      color: var(--navy-deep);
+      font-family: 'Fraunces', serif;
+    }
+
+    .float-card.recognition p {
+      font-size: 12.5px;
+      margin-top: 4px;
+      color: var(--ink-soft);
+    }
+
+    .float-card.founder {
+      bottom: 20px;
+      right: -18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: none;
+    }
+
+    .float-card.founder img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .float-card.founder b {
+      display: block;
+      font-size: 13.5px;
+      color: var(--navy-deep);
+      font-family: 'Fraunces', serif;
+    }
+
+    .float-card.founder span {
+      font-size: 12px;
+      color: var(--ink-soft);
+    }
+
+    /* section basics */
+    section {
+      padding: 88px 0;
+    }
+
+    .section-head {
+      max-width: 640px;
+      margin-bottom: 52px;
+    }
+
+    .eyebrow {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .02em;
+      color: var(--saffron-deep);
+      margin-bottom: 12px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .section-head h2 {
+      font-size: clamp(28px, 3vw, 38px);
+    }
+
+    .section-head p {
+      margin-top: 16px;
+      font-size: 16px;
+      max-width: 56ch;
+    }
+
+    .center {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* approvals strip */
+    .strip {
+      background: var(--paper-2);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 26px 0;
+    }
+
+    .strip .wrap {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .strip-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13.5px;
+      color: var(--ink-soft);
+      font-weight: 600;
+    }
+
+    .strip-item::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--saffron);
+      display: inline-block;
+    }
+
+    /* why grid */
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .why-item {
+      background: #fff;
+      padding: 34px 30px;
+    }
+
+    .why-item .num {
+      font-family: 'Fraunces', serif;
+      font-size: 14px;
+      color: var(--saffron-deep);
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .why-item h4 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .why-item p {
+      font-size: 14.5px;
+    }
+
+    /* programs */
+    .programs {
+      background: var(--navy-deep);
+      color: #fff;
+      position: relative;
+    }
+
+    .programs .section-head h2 {
+      color: #fff;
+    }
+
+    .programs .section-head p {
+      color: #aab0c4;
+    }
+
+    .programs .eyebrow {
+      color: #f0c988;
+    }
+
+    .program-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .program-card {
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .09);
+      border-radius: 12px;
+      padding: 28px 26px;
+      transition: border-color .2s ease, background .2s ease;
+    }
+
+    .program-card:hover {
+      border-color: rgba(226, 129, 31, .5);
+      background: rgba(255, 255, 255, .06);
+    }
+
+    .program-card .tag {
+      display: inline-block;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: .03em;
+      color: var(--navy-deep);
+      background: #f0c988;
+      padding: 4px 10px;
+      border-radius: 5px;
+      margin-bottom: 16px;
+    }
+
+    .program-card h4 {
+      color: #fff;
+      font-size: 19px;
+      margin-bottom: 10px;
+    }
+
+    .program-card p {
+      color: #a9aec2;
+      font-size: 14px;
+      margin-bottom: 14px;
+    }
+
+    .program-card .meta {
+      display: flex;
+      gap: 16px;
+      font-size: 12.5px;
+      color: #7d8399;
+      border-top: 1px solid rgba(255, 255, 255, .08);
+      padding-top: 14px;
+    }
+
+    .program-card .meta b {
+      color: #e7e9f2;
+      font-weight: 600;
+    }
+
+    .rapid-wrap {
+      margin-top: 60px;
+    }
+
+    .rapid-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .rapid-head h3 {
+      color: #fff;
+      font-size: 22px;
+    }
+
+    .rapid-head p {
+      color: #a9aec2;
+      font-size: 14px;
+      max-width: 40ch;
+    }
+
+    table.rapid {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table.rapid th,
+    table.rapid td {
+      text-align: left;
+      padding: 16px 18px;
+      font-size: 14.5px;
+      border-bottom: 1px solid rgba(255, 255, 255, .09);
+    }
+
+    table.rapid th {
+      color: #7d8399;
+      font-weight: 600;
+      font-size: 12.5px;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+    }
+
+    table.rapid td {
+      color: #e7e9f2;
+    }
+
+    table.rapid td.dur {
+      color: #f0c988;
+      font-weight: 600;
+    }
+
+    /* PGDCC deep dive */
+    .pgdcc {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .pgdcc-copy .eyebrow {
+      margin-bottom: 14px;
+    }
+
+    .pgdcc-copy h2 {
+      font-size: clamp(26px, 3vw, 34px);
+      margin-bottom: 18px;
+    }
+
+    .pgdcc-copy p {
+      font-size: 15.5px;
+      margin-bottom: 18px;
+    }
+
+    .pgdcc-facts {
+      display: flex;
+      gap: 28px;
+      margin-top: 28px;
+    }
+
+    .pgdcc-facts div b {
+      display: block;
+      font-family: 'Fraunces', serif;
+      font-size: 24px;
+      color: var(--navy-deep);
+    }
+
+    .pgdcc-facts div span {
+      font-size: 13px;
+      color: var(--ink-soft);
+    }
+
+    .mode-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .mode-col {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 26px;
+    }
+
+    .mode-col h4 {
+      font-size: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mode-col h4::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--saffron);
+    }
+
+    .mode-col li {
+      font-size: 14px;
+      color: var(--ink-soft);
+      padding: 8px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .mode-col li:first-of-type {
+      border-top: none;
+    }
+
+    .mode-col li b {
+      color: var(--ink);
+      display: block;
+      font-size: 14.5px;
+    }
+
+    /* curriculum */
+    .curric-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .curric-col {
+      padding: 30px 22px;
+      border-left: 1px solid var(--line);
+    }
+
+    .curric-col:first-child {
+      border-left: none;
+    }
+
+    .curric-col h4 {
+      font-size: 15px;
+      color: var(--saffron-deep);
+      margin-bottom: 16px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+    }
+
+    .curric-col li {
+      font-size: 13.5px;
+      color: var(--ink-soft);
+      padding: 7px 0;
+      line-height: 1.4;
+    }
+
+    /* recognition */
+    .recognition-section {
+      background: var(--teal);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .recognition-section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(500px 400px at 90% 20%, rgba(195, 154, 63, .25), transparent 65%);
+    }
+
+    .rec-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .rec-badge {
+      display: inline-block;
+      color: var(--navy-deep);
+      background: linear-gradient(120deg, #f0c988, #c39a3f);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 700;
+      margin-bottom: 22px;
+    }
+
+    .rec-grid h2 {
+      color: #fff;
+      font-size: clamp(26px, 3vw, 36px);
+      max-width: 15ch;
+      margin-bottom: 20px;
+    }
+
+    .rec-quote {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 19px;
+      color: #f4e5c2;
+      border-left: 2px solid var(--gold);
+      padding-left: 20px;
+      margin: 22px 0;
+      line-height: 1.5;
+    }
+
+    .rec-grid p.body {
+      color: #cdd8d6;
+      font-size: 15px;
+      margin-bottom: 22px;
+    }
+
+    .rec-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 24px;
+      margin-top: 26px;
+    }
+
+    .rec-list li {
+      font-size: 13.5px;
+      color: #dfe8e6;
+      padding-left: 18px;
+      position: relative;
+    }
+
+    .rec-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 7px;
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+
+    .rec-photo {
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .5);
+    }
+
+    .rec-photo img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+    }
+
+    /* founder */
+    .founder-grid {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .founder-photo-wrap {
+      position: relative;
+    }
+
+    .founder-photo-wrap img {
+      border-radius: 14px;
+      width: 100%;
+      height: 460px;
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .founder-badge {
+      position: absolute;
+      bottom: -18px;
+      left: -18px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 14px 18px;
+      box-shadow: 0 20px 40px -14px rgba(0, 0, 0, .3);
+    }
+
+    .founder-badge b {
+      display: block;
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      color: var(--saffron-deep);
+    }
+
+    .founder-badge span {
+      font-size: 12px;
+      color: var(--ink-soft);
+    }
+
+    .founder-copy .eyebrow {
+      margin-bottom: 10px;
+    }
+
+    .founder-copy h2 {
+      font-size: clamp(24px, 3vw, 32px);
+      margin-bottom: 4px;
+    }
+
+    .founder-copy .role {
+      font-size: 14px;
+      color: var(--saffron-deep);
+      font-weight: 600;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .founder-copy p {
+      font-size: 15.5px;
+      margin-bottom: 16px;
+    }
+
+    .founder-focus {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .founder-focus span {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--navy-deep);
+      background: var(--paper-2);
+      border: 1px solid var(--line);
+      padding: 8px 14px;
+      border-radius: 999px;
+    }
+
+    /* career */
+    .career {
+      background: var(--paper-2);
+    }
+
+    .career-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .career-copy p {
+      font-size: 15.5px;
+      margin-bottom: 16px;
+    }
+
+    .career-photo {
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 20px 44px -18px rgba(0, 0, 0, .28);
+    }
+
+    .career-photo img {
+      width: 100%;
+      height: 340px;
+      object-fit: cover;
+    }
+
+    .career-pill-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 26px;
+    }
+
+    .career-pill {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--navy-deep);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .career-pill::before {
+      content: "✓";
+      color: var(--saffron-deep);
+      font-weight: 700;
+    }
+
+    /* CTA */
+    .cta-band {
+      background: var(--navy-deep);
+      text-align: center;
+      padding: 80px 0;
+    }
+
+    .cta-band h2 {
+      color: #fff;
+      font-size: clamp(26px, 3.4vw, 38px);
+      max-width: 16ch;
+      margin: 0 auto 18px;
+    }
+
+    .cta-band p {
+      color: #aab0c4;
+      max-width: 46ch;
+      margin: 0 auto 30px;
+    }
+
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    /* footer */
+    footer {
+      background: var(--navy-deep);
+      border-top: 1px solid rgba(255, 255, 255, .08);
+      padding: 56px 0 26px;
+    }
+
+    .foot-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .foot-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .foot-brand img {
+      height: 36px;
+    }
+
+    .foot-brand b {
+      color: #fff;
+      font-family: 'Fraunces', serif;
+      font-size: 17px;
+    }
+
+    footer p {
+      color: #8991a8;
+      font-size: 13.5px;
+    }
+
+    footer h5 {
+      color: #fff;
+      font-size: 13.5px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      letter-spacing: .02em;
+    }
+
+    footer .flinks li {
+      margin-bottom: 10px;
+    }
+
+    footer .flinks a {
+      color: #a9aec2;
+      font-size: 13.5px;
+    }
+
+    footer .flinks a:hover {
+      color: #f0c988;
+    }
+
+    .foot-bottom {
+      border-top: 1px solid rgba(255, 255, 255, .08);
+      padding-top: 22px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12.5px;
+      color: #6b7288;
+    }
+
+    /* responsive */
+    @media (max-width:980px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-visual {
+        padding-bottom: 80px;
+      }
+
+      .why-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .program-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .curric-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      .curric-col {
+        border-left: none;
+        border-top: 1px solid var(--line);
+      }
+
+      .curric-col:nth-child(1),
+      .curric-col:nth-child(2),
+      .curric-col:nth-child(3) {
+        border-top: none;
+      }
+
+      .rec-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .rec-photo img {
+        height: 280px;
+      }
+
+      .founder-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .founder-photo-wrap img {
+        height: 340px;
+      }
+
+      .career-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pgdcc {
+        grid-template-columns: 1fr;
+      }
+
+      .foot-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width:720px) {
+      .nav-links {
+        display: none;
+      }
+
+      .burger {
+        display: block;
+      }
+
+      .wrap {
+        padding: 0 20px;
+      }
+
+      section {
+        padding: 60px 0;
+      }
+
+      .why-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .program-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .curric-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .rec-list {
+        grid-template-columns: 1fr;
+      }
+
+      .foot-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .float-card.founder {
+        display: none;
+      }
+
+      table.rapid {
+        font-size: 13px;
+      }
+
+      table.rapid th:nth-child(2),
+      table.rapid td:nth-child(2) {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <nav>
+      <a href="#" class="brand">
+        <img src="assets/logo.jpg" alt="CIATN logo">
+        <span class="brand-name">CIATN <span>Institute</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="#programs">Programs</a>
+        <a href="#pgdcc">PGDCC</a>
+        <a href="#recognition">Recognition</a>
+        <a href="#founder">Founder</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-cta">
+        <a href="#contact" class="btn btn-navy">Enroll now</a>
+        <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="hero-eyebrow"><span class="dot"></span>Pune's leading institute for aesthetic training</span>
+        <h1>Train as a confident <em>clinical cosmetologist</em></h1>
+        <p class="lead">CIATN Institute builds skilled, ethically grounded aesthetic professionals through hands-on
+          clinical training, government-aligned curricula, and mentorship from a working cosmetic physician.</p>
+        <div class="hero-actions">
+          <a href="#programs" class="btn btn-primary">Explore programs</a>
+          <a href="#pgdcc" class="btn btn-outline">See the PGDCC course</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><b>13+</b><span>Years in aesthetic medicine</span></div>
+          <div class="hero-stat"><b>9+</b><span>Courses under one roof</span></div>
+          <div class="hero-stat"><b>2026</b><span>National recognition award</span></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-photo">
+          <img src="assets/hero_treatment.jpg" alt="Clinical cosmetology treatment in progress at CIATN">
+        </div>
+        <div class="float-card recognition">
+          <div class="badge-row"><span class="badge-dot"></span><b>Leader in Aesthetic Medicine</b></div>
+          <p>Honoured at Advantage Vidarbha 2026 by Hon. Union Minister Shri Nitin Gadkari</p>
+        </div>
+        <div class="float-card founder">
+          <img src="assets/founder_portrait.jpg" alt="Dr. Akshaya Jain">
+          <div>
+            <b>Dr. Akshaya Jain</b>
+            <span>Founder &amp; Director, CIATN</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="strip">
+    <div class="wrap">
+      <span class="strip-item">ISO certified</span>
+      <span class="strip-item">Government-aligned skill development</span>
+      <span class="strip-item">MSME registered</span>
+      <span class="strip-item">Startup India recognised</span>
+      <span class="strip-item">Internship &amp; placement support</span>
+    </div>
+  </div>
+
+  <section id="why">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Why CIATN</span>
+        <h2>Structured training, built around real clinical practice</h2>
+        <p>Every CIATN program is designed with one aim: turning students into practitioners who can walk into a clinic
+          on day one, not just pass an exam.</p>
+      </div>
+      <div class="why-grid">
+        <div class="why-item"><span class="num">01</span>
+          <h4>Hands-on clinical exposure</h4>
+          <p>Live patient sessions on state-of-the-art equipment, not simulations — supervised at every step.</p>
+        </div>
+        <div class="why-item"><span class="num">02</span>
+          <h4>Expert doctors &amp; faculty</h4>
+          <p>Trained by a practising aesthetic cosmetologist with over a decade running two skin clinics.</p>
+        </div>
+        <div class="why-item"><span class="num">03</span>
+          <h4>Government-aligned curriculum</h4>
+          <p>Coursework mapped to national skill development standards for recognised credibility.</p>
+        </div>
+        <div class="why-item"><span class="num">04</span>
+          <h4>Internship &amp; placement support</h4>
+          <p>Structured pathways into aesthetic clinics, dermatology centres, spas and med-spas after graduation.</p>
+        </div>
+        <div class="why-item"><span class="num">05</span>
+          <h4>Business &amp; clinic setup guidance</h4>
+          <p>Marketing, pricing and entrepreneurship modules for students planning their own practice.</p>
+        </div>
+        <div class="why-item"><span class="num">06</span>
+          <h4>Online + offline flexibility</h4>
+          <p>Campus classes with hands-on equipment access, or full digital access with lifetime study material.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="programs" id="programs">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Programs &amp; training</span>
+        <h2>Diploma, fellowship and master-level programs</h2>
+        <p>Choose a full diploma pathway or a focused masterclass — every course covers clinical foundation, live
+          procedures, and safety protocol.</p>
+      </div>
+      <div class="program-grid">
+        <div class="program-card">
+          <span class="tag">Flagship</span>
+          <h4>PG Diploma in Clinical Cosmetology</h4>
+          <p>India's most comprehensive PGDCC — laser, injectables, chemical peels and body contouring in one structured
+            program.</p>
+          <div class="meta"><span><b>3 weeks</b> campus</span><span><b>6 months</b> online</span></div>
+        </div>
+        <div class="program-card">
+          <span class="tag">Diploma</span>
+          <h4>PG Diploma in Trichology (PGOT)</h4>
+          <p>Hair and scalp science, hair-loss diagnostics and medical trichology treatment protocols.</p>
+          <div class="meta"><span><b>3 months</b> campus / online</span></div>
+        </div>
+        <div class="program-card">
+          <span class="tag">Diploma</span>
+          <h4>Advance Diploma in Cosmetology</h4>
+          <p>Broader aesthetic skill-building across skin, hair and minor cosmetic procedures.</p>
+          <div class="meta"><span>Campus &amp; online tracks</span></div>
+        </div>
+        <div class="program-card">
+          <span class="tag">Diploma</span>
+          <h4>Advance Diploma in Trichology</h4>
+          <p>Focused, in-depth training in scalp health and hair restoration therapeutics.</p>
+          <div class="meta"><span>Campus &amp; online tracks</span></div>
+        </div>
+        <div class="program-card">
+          <span class="tag">Certification</span>
+          <h4>Diploma in Laser Technicians</h4>
+          <p>Operate ablative, non-ablative, Q-switched and IPL laser systems safely and effectively.</p>
+          <div class="meta"><span>Equipment-led training</span></div>
+        </div>
+        <div class="program-card">
+          <span class="tag">Fellowship</span>
+          <h4>Fellowship in Facial Aesthetics &amp; Clinical Cosmetology</h4>
+          <p>An accelerated fellowship track for professionals building an independent aesthetic practice.</p>
+          <div class="meta"><span><b>1 month</b> intensive</span></div>
+        </div>
+      </div>
+
+      <div class="rapid-wrap">
+        <div class="rapid-head">
+          <div>
+            <h3>Rapid masterclasses</h3>
+            <p>Short, focused certifications for practitioners who want a single procedure skill fast.</p>
+          </div>
+          <a href="#contact" class="btn btn-outline">Ask about dates</a>
+        </div>
+        <table class="rapid">
+          <thead>
+            <tr>
+              <th>Masterclass</th>
+              <th>Focus</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Laser Hair Reduction</td>
+              <td>Ablative &amp; IPL systems</td>
+              <td class="dur">15 days</td>
+            </tr>
+            <tr>
+              <td>Mesotherapy &amp; PRP</td>
+              <td>Injectable rejuvenation</td>
+              <td class="dur">8 days</td>
+            </tr>
+            <tr>
+              <td>Thread Lift</td>
+              <td>Non-surgical lifting</td>
+              <td class="dur">8 days</td>
+            </tr>
+            <tr>
+              <td>Chemical Peels</td>
+              <td>Resurfacing protocols</td>
+              <td class="dur">8 days</td>
+            </tr>
+            <tr>
+              <td>Botox &amp; Fillers</td>
+              <td>Injectable aesthetics</td>
+              <td class="dur">8 days</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="pgdcc">
+    <div class="wrap pgdcc">
+      <div class="pgdcc-copy">
+        <span class="eyebrow">India's best PGDCC</span>
+        <h2>Post Graduate Diploma in Clinical Cosmetology</h2>
+        <p>Clinical cosmetology sits at the intersection of dermatological science, laser technology and anti-aging
+          medicine. The PGDCC is CIATN's flagship program — a structured, skill-oriented course that trains you to
+          deliver safe, ethical and effective cosmetic treatments.</p>
+        <p>Graduates leave equipped for independent practice, an additional income stream, or a specialised role inside
+          an aesthetic clinic, dermatology centre, medical spa or wellness centre.</p>
+        <div class="pgdcc-facts">
+          <div><b>3 weeks</b><span>Campus duration</span></div>
+          <div><b>6 months</b><span>Online duration</span></div>
+          <div><b>100%</b><span>Virtual access option</span></div>
+        </div>
+      </div>
+      <div class="mode-cols">
+        <div class="mode-col">
+          <h4>Campus classes</h4>
+          <ul>
+            <li><b>Expert faculty</b>Taught directly by practising doctors</li>
+            <li><b>Personalised training</b>Small-batch, hands-on experience</li>
+            <li><b>State-of-the-art equipment</b>Live access to clinical devices</li>
+            <li><b>Industry-relevant curriculum</b>Updated subjects &amp; research</li>
+          </ul>
+        </div>
+        <div class="mode-col">
+          <h4>Online classes</h4>
+          <ul>
+            <li><b>Full digital access</b>Attend from anywhere</li>
+            <li><b>Cloud material</b>Available anytime, anywhere</li>
+            <li><b>Your own account</b>Private and secure</li>
+            <li><b>Lifetime access</b>Study material yours to keep</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="career" style="padding-top:0;">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Curriculum</span>
+        <h2>Everything a complete aesthetic professional needs</h2>
+        <p>The PGDCC curriculum is built in five parts — from clinical foundation through to running your own practice.
+        </p>
+      </div>
+      <div class="curric-grid">
+        <div class="curric-col">
+          <h4>Clinical foundation</h4>
+          <ul>
+            <li>Skin &amp; hair anatomy</li>
+            <li>Cosmetic dermatology principles</li>
+            <li>Patient evaluation</li>
+          </ul>
+        </div>
+        <div class="curric-col">
+          <h4>Procedural expertise</h4>
+          <ul>
+            <li>Chemical peels</li>
+            <li>Botox &amp; dermal fillers</li>
+            <li>Laser treatments</li>
+            <li>Microneedling &amp; mesotherapy</li>
+            <li>Body contouring</li>
+          </ul>
+        </div>
+        <div class="curric-col">
+          <h4>Safety &amp; ethics</h4>
+          <ul>
+            <li>Medico-legal aspects</li>
+            <li>Complication management</li>
+            <li>Laser safety</li>
+          </ul>
+        </div>
+        <div class="curric-col">
+          <h4>Skill development</h4>
+          <ul>
+            <li>Hands-on training</li>
+            <li>Supervised clinical exposure</li>
+            <li>Treatment planning</li>
+          </ul>
+        </div>
+        <div class="curric-col">
+          <h4>Entrepreneurship</h4>
+          <ul>
+            <li>Clinic setup guidance</li>
+            <li>Marketing strategies</li>
+            <li>Business development</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="recognition-section" id="recognition">
+    <div class="wrap rec-grid">
+      <div>
+        <span class="rec-badge">National recognition · 2026</span>
+        <h2>Honoured as "Leader in Aesthetic Medicine &amp; Skill Development"</h2>
+        <p class="rec-quote">Presented to Dr. Akshaya Jain by Hon. Union Minister Shri Nitin Gadkari at Advantage
+          Vidarbha 2026, in recognition of her leadership and contribution to aesthetic medicine.</p>
+        <p class="body">This national honour reflects CIATN's structured, standardised approach to aesthetic education
+          and its alignment with government skill-development initiatives.</p>
+        <ul class="rec-list">
+          <li>National-level government credibility</li>
+          <li>Alignment with national skill standards</li>
+          <li>Strong institutional trust &amp; authority</li>
+          <li>Industry-recognised training quality</li>
+          <li>Clinical excellence in cosmetic medicine</li>
+          <li>Enhanced student career value</li>
+        </ul>
+      </div>
+      <div class="rec-photo">
+        <img src="assets/nitin.jpeg" alt="Hon. Union Minister Shri Nitin Gadkari presenting award to Dr. Akshaya Jain">
+      </div>
+    </div>
+  </section>
+
+  <section id="founder">
+    <div class="wrap founder-grid">
+      <div class="founder-photo-wrap">
+        <img src="assets/founder_portrait.jpg" alt="Dr. Akshaya Jain, Founder & Director of CIATN Institute">
+        <div class="founder-badge"><b>13+</b><span>years in cosmetic medicine</span></div>
+      </div>
+      <div class="founder-copy">
+        <span class="eyebrow">Director's message</span>
+        <h2>Dr. Akshaya Jain</h2>
+        <span class="role">Founder &amp; Director, CIATN Institute · Founder, Skintillating</span>
+        <p>Aesthetic medicine today sits at the intersection of medical science, advanced technology and artistic
+          precision. Over more than a decade in cosmetic and aesthetic medicine, Dr. Jain has watched the field evolve
+          from basic cosmetic treatments into highly advanced, technology-driven clinical cosmetology.</p>
+        <p>She founded CIATN with a clear purpose: to build highly skilled, ethically grounded, clinically confident
+          aesthetic professionals — through structured training, hands-on clinical exposure, advanced laser technology,
+          and government-aligned skill development standards. The goal isn't just to prepare students to practise, but
+          to lead.</p>
+        <div class="founder-focus">
+          <span>Clinical excellence</span>
+          <span>Ethical &amp; safe practice</span>
+          <span>Real-world patient management</span>
+          <span>Entrepreneurial guidance</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="career">
+    <div class="wrap career-grid">
+      <div class="career-copy">
+        <span class="eyebrow">Career progress</span>
+        <h2>Where a CIATN qualification can take you</h2>
+        <p>Health, wellness and aesthetic training are in high demand. CIATN's curriculum, hands-on equipment access and
+          mentorship are built to carry graduates into real clinical roles or independent practice.</p>
+        <p>With strong industry connections and world-class mentorship, students leave equipped to become sought-after
+          aesthetic specialists, renowned cosmetic physicians, or confident clinic owners.</p>
+        <div class="career-pill-row">
+          <span class="career-pill">Aesthetic clinics</span>
+          <span class="career-pill">Dermatology centres</span>
+          <span class="career-pill">Hair restoration clinics</span>
+          <span class="career-pill">Wellness centres</span>
+          <span class="career-pill">Medical spas</span>
+          <span class="career-pill">Independent practice</span>
+        </div>
+      </div>
+      <div class="career-photo">
+        <img src="assets/pgdc.jpeg" alt="CIATN graduating cohort">
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band" id="contact">
+    <div class="wrap">
+      <h2>Ready to start your aesthetic medicine career?</h2>
+      <p>Talk to our admissions team about the PGDCC, our diploma tracks, or a rapid masterclass — campus and online
+        batches are both open for enrolment.</p>
+      <div class="cta-actions">
+        <a href="tel:+918669623636" class="btn btn-primary">Call 86696 23636</a>
+        <a href="https://www.ciatn.org" class="btn btn-outline">Visit ciatn.org</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <div class="foot-brand">
+            <img src="assets/logo.jpg" alt="CIATN logo">
+            <b>CIATN Institute</b>
+          </div>
+          <p>Chromocosmo Institute of Aesthetics, Trichology &amp; Nutrition — Pune's leading institute for professional
+            cosmetology training.</p>
+        </div>
+        <div>
+          <h5>Programs</h5>
+          <ul class="flinks">
+            <li><a href="#pgdcc">PGDCC</a></li>
+            <li><a href="#programs">PG Diploma in Trichology</a></li>
+            <li><a href="#programs">Advance diplomas</a></li>
+            <li><a href="#programs">Rapid masterclasses</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Institute</h5>
+          <ul class="flinks">
+            <li><a href="#why">Why CIATN</a></li>
+            <li><a href="#recognition">Recognition</a></li>
+            <li><a href="#founder">Founder</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Contact</h5>
+          <ul class="flinks">
+            <li><a href="tel:+918669623636">+91 86696 23636</a></li>
+            <li><a href="https://www.ciatn.org">www.ciatn.org</a></li>
+            <li><a href="#">B7 Krishna Apartments, Opp. IDBI Bank, Boat Club Road, Pune 411011</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 CIATN Institute. All rights reserved.</span>
+        <span>Chromocosmo Institute of Aesthetics, Trichology &amp; Nutrition</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const burger = document.querySelector('.burger');
+    const links = document.querySelector('.nav-links');
+    burger.addEventListener('click', () => {
+      const isOpen = links.style.display === 'flex';
+      links.style.display = isOpen ? 'none' : 'flex';
+      links.style.cssText += isOpen ? '' : 'flex-direction:column;position:absolute;top:64px;left:0;right:0;background:#f8f5ee;padding:20px 32px;border-bottom:1px solid #e2ddd0;';
+    });
+  </script>
+
+</body>
+
+</html>
