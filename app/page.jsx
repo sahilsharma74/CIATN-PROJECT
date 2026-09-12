@@ -4,6 +4,7 @@ import ApprovedBy from '@/components/ApprovedBy';
 import AboutIntro from '@/components/AboutIntro';
 import Stats from '@/components/Stats';
 import NsdcAccreditation from '@/components/NsdcAccreditation';
+import CinematicPhotoSection from '@/components/CinematicPhotoSection';
 import Programs from '@/components/Programs';
 import WhyCiatn from '@/components/WhyCiatn';
 import Pgdcc from '@/components/Pgdcc';
@@ -27,6 +28,7 @@ export default function Home() {
         <AboutIntro />
         <Stats />
         <NsdcAccreditation />
+        <CinematicPhotoSection />
         <Programs />
         <WhyCiatn />
         <Pgdcc />

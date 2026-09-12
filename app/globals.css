@@ -5208,6 +5208,168 @@ div[id],
   color: #6C757D;
 }
 
+/* ==========================================================================
+   CINEMATIC PHOTO SCROLL-MOTION SECTION
+   ========================================================================== */
+.ciatn-cinematic-section {
+  position: relative;
+  height: 240vh; /* 240vh scroll height */
+  background: #FAF8F5; /* CIATN luxury paper background */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ciatn-cinematic-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.ciatn-cinematic-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  box-sizing: border-box;
+}
+
+.ciatn-cinematic-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 680px;
+  margin-bottom: 28px;
+  z-index: 10;
+  will-change: transform, opacity;
+}
+
+.ciatn-cinematic-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(226, 129, 31, 0.08);
+  border: 1px solid rgba(226, 129, 31, 0.25);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-family: 'Inter', var(--font-inter), sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #E2811F;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.ciatn-cinematic-heading {
+  font-family: 'Fraunces', var(--font-fraunces), serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  color: #0F1738;
+  line-height: 1.18;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.ciatn-cinematic-subheading {
+  font-family: 'Inter', var(--font-inter), sans-serif;
+  font-size: clamp(14px, 1.2vw, 16px);
+  color: #5A6478;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.ciatn-cinematic-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  will-change: transform, width, height, border-radius;
+  z-index: 5;
+  background: #0F1738;
+}
+
+.ciatn-cinematic-img {
+  object-fit: cover;
+  object-position: center 30%;
+  transition: transform 0.4s ease;
+}
+
+.ciatn-cinematic-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 56, 0.15) 0%,
+    rgba(15, 23, 56, 0.05) 50%,
+    rgba(15, 23, 56, 0.4) 100%
+  );
+  pointer-events: none;
+}
+
+.ciatn-cinematic-badge {
+  position: absolute;
+  bottom: 20px;
+  left: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 23, 56, 0.75);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-family: 'Inter', var(--font-inter), sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  z-index: 12;
+}
+
+.badge-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #E2811F;
+  box-shadow: 0 0 0 3px rgba(226, 129, 31, 0.35);
+}
+
+@media (max-width: 1024px) {
+  .ciatn-cinematic-section {
+    height: auto;
+    padding: 60px 20px;
+  }
+
+  .ciatn-cinematic-sticky {
+    position: relative;
+    height: auto;
+    top: auto;
+  }
+
+  .ciatn-cinematic-copy {
+    opacity: 1 !important;
+    transform: none !important;
+    margin-bottom: 24px;
+  }
+
+  .ciatn-cinematic-image-wrapper {
+    width: 90vw !important;
+    height: 55vh !important;
+    transform: none !important;
+    border-radius: 20px !important;
+  }
+}
+
+
 
 
 
