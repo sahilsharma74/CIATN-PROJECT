@@ -7,7 +7,7 @@ import Image from 'next/image';
 const GALLERY_LAYERS = {
   mainCenter: {
     id: 'main-center-scaler',
-    src: '/assets/hero_treatment.jpg',
+    src: '/assets/hero_treatment.webp',
     alt: 'CIATN Hands-On Clinical Cosmetology & Aesthetic Procedure Training',
     title: 'Hands-On Clinical Cosmetology Training',
   },
@@ -15,7 +15,7 @@ const GALLERY_LAYERS = {
   layer1Outer: [
     {
       id: 'outer-1',
-      src: '/about/traning.png',
+      src: '/about/traning.webp',
       alt: 'Practical Clinical Workshop',
       gridArea: 'col1-row1',
       label: 'Practical Workshop',
@@ -24,7 +24,7 @@ const GALLERY_LAYERS = {
     },
     {
       id: 'outer-2',
-      src: '/about/rg3.jpg',
+      src: '/about/rg3.webp',
       alt: 'Hands-On Training Session',
       gridArea: 'col5-row1',
       label: 'Hands-On Training',
@@ -33,7 +33,7 @@ const GALLERY_LAYERS = {
     },
     {
       id: 'outer-3',
-      src: '/about/prociser.png',
+      src: '/about/prociser.webp',
       alt: 'Clinical Procedure Demonstration',
       gridArea: 'col1-row2',
       label: 'Clinical Demo',
@@ -42,7 +42,7 @@ const GALLERY_LAYERS = {
     },
     {
       id: 'outer-4',
-      src: '/about/pgdc.jpeg',
+      src: '/assets/pgdc.webp',
       alt: 'Post Graduate Clinical Lecture',
       gridArea: 'col5-row2',
       label: 'PG Lecture',
@@ -51,7 +51,7 @@ const GALLERY_LAYERS = {
     },
     {
       id: 'outer-5',
-      src: '/assets/graduates.jpg',
+      src: '/assets/graduates.webp',
       alt: 'CIATN Certified Doctor Graduates',
       gridArea: 'col1-row3',
       label: 'Doctor Graduates',
@@ -60,7 +60,7 @@ const GALLERY_LAYERS = {
     },
     {
       id: 'outer-6',
-      src: '/assets/lips.jpg',
+      src: '/assets/lips.webp',
       alt: 'Aesthetic Dermatology Training',
       gridArea: 'col5-row3',
       label: 'Aesthetic Procedures',
@@ -72,7 +72,7 @@ const GALLERY_LAYERS = {
   layer2Inner: [
     {
       id: 'inner-1',
-      src: '/home page/akshaya.jpeg',
+      src: '/assets/founder_portrait.webp',
       alt: 'Faculty Guidance by Dr. Akshaya Jain',
       gridArea: 'col2-row1',
       label: 'Expert Faculty',
@@ -81,7 +81,7 @@ const GALLERY_LAYERS = {
     },
     {
       id: 'inner-2',
-      src: '/home page/image.png',
+      src: '/assets/hero_treatment.webp',
       alt: 'CIATN Advanced Training Facility',
       gridArea: 'col4-row1',
       label: 'Clinical Facility',
@@ -90,7 +90,7 @@ const GALLERY_LAYERS = {
     },
     {
       id: 'inner-3',
-      src: '/home page/image copy.png',
+      src: '/assets/nsdc_certificate.webp',
       alt: 'Facial Aesthetics Masterclass',
       gridArea: 'col2-row2',
       label: 'Facial Aesthetics',
@@ -99,7 +99,7 @@ const GALLERY_LAYERS = {
     },
     {
       id: 'inner-4',
-      src: '/home page/image copy 2.png',
+      src: '/assets/ebvtr_certificate.webp',
       alt: 'Clinical Trichology Demonstration',
       gridArea: 'col4-row2',
       label: 'Clinical Trichology',
@@ -108,7 +108,7 @@ const GALLERY_LAYERS = {
     },
     {
       id: 'inner-5',
-      src: '/assets/nitin.jpeg',
+      src: '/assets/nitin.webp',
       alt: 'Live Patient Procedure Guidance',
       gridArea: 'col2-row3',
       label: 'Live Mentorship',
@@ -117,7 +117,7 @@ const GALLERY_LAYERS = {
     },
     {
       id: 'inner-6',
-      src: '/courses/raw.jpeg',
+      src: '/courses/raw.webp',
       alt: 'Laser & Energy Based Device Training',
       gridArea: 'col4-row3',
       label: 'Laser Training',
@@ -129,7 +129,7 @@ const GALLERY_LAYERS = {
   layer3Center: [
     {
       id: 'center-top',
-      src: '/assets/founder_portrait.jpg',
+      src: '/assets/founder_portrait.webp',
       alt: 'CIATN Academic Leadership',
       gridArea: 'col3-row1',
       label: 'Academic Leadership',
@@ -138,7 +138,7 @@ const GALLERY_LAYERS = {
     },
     {
       id: 'center-bottom',
-      src: '/assets/pgdc.jpeg',
+      src: '/assets/pgdc.webp',
       alt: 'Hands-on Clinical Practice',
       gridArea: 'col3-row3',
       label: 'Clinical Excellence',

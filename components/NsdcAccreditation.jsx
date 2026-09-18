@@ -72,7 +72,7 @@ export default function NsdcAccreditation() {
                 <span className="pill-dot"></span> Verified Accreditation
               </div>
               <Image
-                src="/assets/nsdc_certificate.png"
+                src="/assets/nsdc_certificate.webp"
                 alt="Official NSDC Accreditation Certificate - Chromocosmo Institute of Aesthetics Trichology Nutrition Pvt Ltd (TC ID: TC329218)"
                 width={560}
                 height={390}
@@ -101,7 +101,7 @@ export default function NsdcAccreditation() {
             </div>
             <div className="cert-lightbox-body">
               <Image
-                src="/assets/nsdc_certificate.png"
+                src="/assets/nsdc_certificate.webp"
                 alt="Official NSDC Accreditation Certificate Full Screen"
                 width={1120}
                 height={780}

@@ -17,7 +17,7 @@ export default function CoursesHero() {
           </div>
           <div className="courses-hero-image-wrapper">
             <Image
-              src="/courses/raw.jpeg"
+              src="/courses/raw.webp"
               alt="CIATN Clinical Course Training"
               width={600}
               height={400}

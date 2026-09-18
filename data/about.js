@@ -24,7 +24,7 @@ export const aboutFounderData = {
   name: 'Dr. Akshaya Jain',
   role: 'CIATN Founder',
   body: 'Dr. Akshaya Jain is one of India’s most recognized names in cosmetic medicine. With 12+ years of experience and founder of Skintillatingg Clinics, she brings unmatched passion and innovation to CIATN. Under her leadership, students receive personalized guidance, access to elite networks, and practical wisdom from real clinical settings.',
-  image: '/assets/founder_portrait.jpg',
+  image: '/assets/founder_portrait.webp',
   ctaText: 'Contact Us',
   ctaLink: '/contact',
 };

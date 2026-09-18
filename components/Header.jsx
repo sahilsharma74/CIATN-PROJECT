@@ -24,7 +24,7 @@ export default function Header() {
       <nav>
         <Link href="/" className="brand" onClick={closeMenu}>
           <Image
-            src="/assets/ciatn-logo.png"
+            src="/assets/ciatn-logo.webp"
             alt="CIATN Institute — Chromocosmo Institute of Aesthetics, Trichology & Nutrition"
             width={180}
             height={60}

@@ -18,7 +18,7 @@ export default function AboutHero() {
           </div>
           <div className="about-hero-image-wrapper">
             <Image
-              src="/about/prociser.png"
+              src="/about/prociser.webp"
               alt="CIATN Clinical Procedure Training"
               width={600}
               height={400}

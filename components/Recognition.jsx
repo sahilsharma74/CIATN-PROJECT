@@ -32,7 +32,7 @@ export default function Recognition() {
         </div>
         <div className="rec-photo">
           <Image
-            src="/assets/nitin.jpeg"
+            src="/assets/nitin.webp"
             alt="Hon. Union Minister Shri Nitin Gadkari presenting award to Dr. Akshaya Jain"
             width={600}
             height={420}

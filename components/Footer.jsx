@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="foot-grid">
           <div>
             <div className="foot-brand">
-              <Image src="/assets/ciatn-logo.png" alt="CIATN logo" width={48} height={48} style={{ height: '44px', width: 'auto', objectFit: 'contain' }} />
+              <Image src="/assets/ciatn-logo.webp" alt="CIATN logo" width={48} height={48} style={{ height: '44px', width: 'auto', objectFit: 'contain' }} />
               <b>CIATN Institute</b>
             </div>
             <p>

@@ -34,7 +34,7 @@ export default function Career() {
         </div>
         <div className="career-photo">
           <Image
-            src="/assets/pgdc.jpeg"
+            src="/assets/pgdc.webp"
             alt="CIATN graduating cohort"
             width={500}
             height={340}

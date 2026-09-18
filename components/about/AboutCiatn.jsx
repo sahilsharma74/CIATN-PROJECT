@@ -14,7 +14,7 @@ export default function AboutCiatn() {
             </div>
             <div className="about-ciatn-image-wrapper">
               <Image
-                src="/about/traning.png"
+                src="/about/traning.webp"
                 alt="CIATN Clinical Training"
                 width={500}
                 height={350}

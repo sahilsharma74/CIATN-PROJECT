@@ -23,7 +23,7 @@ export default function AboutIntro() {
             </div>
             <div className="about-intro-image-wrapper">
               <Image
-                src="/about/rg3.jpg"
+                src="/about/rg3.webp"
                 alt="CIATN Student Training"
                 width={500}
                 height={350}

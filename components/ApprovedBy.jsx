@@ -42,7 +42,7 @@ export default function ApprovedBy() {
   const certificates = [
     {
       id: 0,
-      src: '/assets/ebvtr_certificate.png',
+      src: '/assets/ebvtr_certificate.webp',
       alt: 'EBVTR Vocational Center Certificate',
       title: 'EBVTR Vocational Center Certificate',
       caption: 'EBVTR Vocational Center',
@@ -50,7 +50,7 @@ export default function ApprovedBy() {
     },
     {
       id: 1,
-      src: '/assets/nsdc_certificate.png',
+      src: '/assets/nsdc_certificate.webp',
       alt: 'NSDC Accredited Center Certificate',
       title: 'NSDC Accredited Center Certificate',
       caption: 'NSDC Accredited Center',

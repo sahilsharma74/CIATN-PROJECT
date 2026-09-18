@@ -44,7 +44,7 @@ export default function Hero() {
         <div className="hero-visual">
           <div className="hero-photo">
             <Image
-              src="/assets/hero_treatment.jpg"
+              src="/assets/hero_treatment.webp"
               alt="Clinical cosmetology treatment in progress at CIATN"
               width={600}
               height={400}
@@ -61,7 +61,7 @@ export default function Hero() {
           </div>
           <div className="float-card founder">
             <Image
-              src="/assets/founder_portrait.jpg"
+              src="/assets/founder_portrait.webp"
               alt="Dr. Akshaya Jain"
               width={44}
               height={44}

@@ -13,7 +13,7 @@ export default function Founder() {
       <div className="wrap founder-grid">
         <div className="founder-photo-wrap">
           <Image
-            src="/assets/founder_portrait.jpg"
+            src="/assets/founder_portrait.webp"
             alt="Dr. Akshaya Jain, Founder of CIATN Institute"
             width={500}
             height={667}
