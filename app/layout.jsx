@@ -1,5 +1,6 @@
 import { Inter, Fraunces, Caveat } from 'next/font/google';
 import './globals.css';
+import SiteMotion3D from '@/components/three/SiteMotion3D';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -28,7 +29,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${fraunces.variable} ${caveat.variable}`}>
-      <body>{children}</body>
+      <body>
+        <SiteMotion3D />
+        {children}
+      </body>
     </html>
   );
 }

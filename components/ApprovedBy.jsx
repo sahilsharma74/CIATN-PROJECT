@@ -1,11 +1,9 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 
 export default function ApprovedBy() {
-  const scrollRef = useRef(null);
-  const [isHovered, setIsHovered] = useState(false);
   const [activeCert, setActiveCert] = useState(null);
   const [tiltStyles, setTiltStyles] = useState({});
 
@@ -69,15 +67,8 @@ export default function ApprovedBy() {
     { src: '/assets/accreditation_logos/education_logo.png', alt: 'Government Skill Education Accredited' },
   ];
 
-  // Tripled logos array for infinite seamless looping
-  const carouselLogos = [...logos, ...logos, ...logos];
-
-  const handleNav = (direction) => {
-    if (scrollRef.current) {
-      const scrollAmount = direction === 'left' ? -220 : 220;
-      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
-  };
+  // 3D rotating ring: one full turn per 8 logos
+  const ringStep = 360 / logos.length;
 
   const recognitions = [
     {
@@ -154,49 +145,25 @@ export default function ApprovedBy() {
             </p>
           </div>
 
-          {/* LOGO CAROUSEL */}
-          <div
-            className="national-standards-carousel"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <button
-              type="button"
-              className="accreditation-nav prev"
-              onClick={() => handleNav('left')}
-              aria-label="Previous accreditation logos"
-            >
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
-            </button>
-
-            <div className="accreditation-carousel-viewport" ref={scrollRef}>
-              <div className={`accreditation-logo-track ${isHovered ? 'paused' : ''}`}>
-                {carouselLogos.map((item, idx) => (
-                  <div key={idx} className="accreditation-logo-badge">
-                    <Image
-                      src={item.src}
-                      alt={item.alt}
-                      width={64}
-                      height={64}
-                      className="accreditation-logo-img"
-                    />
+          {/* 3D ROTATING LOGO RING (temporary experiment) */}
+          <div className="logo-ring-stage" aria-label="Accreditation logos rotating in 3D">
+            <div className="logo-ring">
+              {logos.map((item, idx) => (
+                <div key={item.alt} className="ring-item" style={{ '--a': `${(idx * ringStep).toFixed(1)}deg` }}>
+                  <div className="ring-counter">
+                    <div className="ring-billboard">
+                      <Image
+                        src={item.src}
+                        alt={item.alt}
+                        width={64}
+                        height={64}
+                        className="accreditation-logo-img"
+                      />
+                    </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
-
-            <button
-              type="button"
-              className="accreditation-nav next"
-              onClick={() => handleNav('right')}
-              aria-label="Next accreditation logos"
-            >
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </button>
           </div>
         </div>
 

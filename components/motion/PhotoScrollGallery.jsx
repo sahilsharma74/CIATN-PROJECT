@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 
 // 15 Local CIATN Project Images mapped into 3 animation layers + 1 Main Center Scaler
@@ -148,156 +148,159 @@ const GALLERY_LAYERS = {
   ],
 };
 
+// Flat card list with per-layer parallax factors
+const CARDS = [
+  ...GALLERY_LAYERS.layer1Outer.map((item) => ({ ...item, kind: 'outer', parallax: 1.2 })),
+  ...GALLERY_LAYERS.layer2Inner.map((item) => ({ ...item, kind: 'inner', parallax: 0.8 })),
+  ...GALLERY_LAYERS.layer3Center.map((item) => ({ ...item, kind: 'center-support', parallax: 0.5 })),
+];
+
+// Initial (pre-animation) state so server-rendered markup matches frame zero
+const HIDDEN_STYLE = { opacity: 0, transform: 'scale(0.2) translateZ(-60px)', visibility: 'hidden' };
+
 export default function PhotoScrollGallery() {
   const sectionRef = useRef(null);
   const gridRef = useRef(null);
-
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
-  const [isMobileOrReduced, setIsMobileOrReduced] = useState(false);
+  const headerRef = useRef(null);
+  const mainRef = useRef(null);
+  const cardRefs = useRef(new Map());
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const checkViewport = () => {
-      setIsMobileOrReduced(mediaQuery.matches || window.innerWidth < 768);
+    const mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const isStatic = () => mqReduce.matches || window.innerWidth < 768;
+
+    let rafId = 0;
+    let visible = true;
+    // Smoothed values: the loop chases the real scroll/mouse targets with lerp,
+    // so motion stays fluid even with bursty scroll events.
+    const state = { progress: 0, mx: 0, my: 0, tmx: 0, tmy: 0 };
+
+    const applyStatic = () => {
+      if (headerRef.current) {
+        headerRef.current.style.opacity = '1';
+        headerRef.current.style.transform = 'none';
+      }
+      for (const c of CARDS) {
+        const el = cardRefs.current.get(c.id);
+        if (!el) continue;
+        el.style.opacity = '1';
+        el.style.transform = 'scale(1)';
+        el.style.visibility = 'visible';
+      }
+      if (mainRef.current) {
+        Object.assign(mainRef.current.style, {
+          width: '100%',
+          height: '100%',
+          borderRadius: '20px',
+          transform: 'none',
+          boxShadow: 'none',
+        });
+      }
     };
 
-    checkViewport();
-    window.addEventListener('resize', checkViewport);
+    const frame = () => {
+      rafId = requestAnimationFrame(frame);
+      if (!visible) return;
 
-    let rafId = null;
+      const sec = sectionRef.current;
+      if (sec) {
+        const rect = sec.getBoundingClientRect();
+        const total = rect.height - window.innerHeight;
+        if (total > 0) {
+          const target = Math.min(Math.max(-rect.top / total, 0), 1);
+          state.progress += (target - state.progress) * 0.16;
+        }
+      }
+      state.mx += (state.tmx - state.mx) * 0.08;
+      state.my += (state.tmy - state.my) * 0.08;
+      const p = state.progress;
 
-    const handleScroll = () => {
-      if (!sectionRef.current || mediaQuery.matches) return;
+      const titleOpacity = Math.min(Math.max((p - 0.3) / 0.5, 0), 1);
+      if (headerRef.current) {
+        headerRef.current.style.opacity = titleOpacity.toFixed(3);
+        headerRef.current.style.transform = `translate3d(0, ${((1 - titleOpacity) * 30).toFixed(2)}px, 0)`;
+      }
 
-      const rect = sectionRef.current.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const totalScrollable = rect.height - viewportHeight;
+      for (const c of CARDS) {
+        const el = cardRefs.current.get(c.id);
+        if (!el) continue;
+        if (p < c.startDelay) {
+          el.style.opacity = '0';
+          el.style.transform = 'scale(0.2) translateZ(-60px)';
+          el.style.visibility = 'hidden';
+          continue;
+        }
+        const ratio = Math.min(Math.max((p - c.startDelay) / (c.endDelay - c.startDelay), 0), 1);
+        const eased = Math.sin((ratio * Math.PI) / 2);
+        el.style.opacity = eased.toFixed(3);
+        el.style.transform = `scale(${(0.2 + eased * 0.8).toFixed(4)}) translate3d(${(state.mx * c.parallax).toFixed(2)}px, ${(state.my * c.parallax).toFixed(2)}px, 0)`;
+        el.style.visibility = eased > 0.01 ? 'visible' : 'hidden';
+      }
 
-      if (totalScrollable <= 0) return;
-
-      const scrolled = -rect.top;
-      const progress = Math.min(Math.max(scrolled / totalScrollable, 0), 1);
-
-      setScrollProgress(progress);
+      if (mainRef.current) {
+        const shrinkRatio = Math.min(p / 0.8, 1);
+        const easedShrink = 1 - Math.pow(1 - shrinkRatio, 3); // easeOutCubic
+        const alpha = 0.15 + easedShrink * 0.2;
+        mainRef.current.style.width = `${(95 - easedShrink * 74).toFixed(2)}vw`;
+        mainRef.current.style.height = `${(92 - easedShrink * 66).toFixed(2)}vh`;
+        mainRef.current.style.borderRadius = `${(12 + easedShrink * 16).toFixed(1)}px`;
+        mainRef.current.style.transform = `translate3d(${(state.mx * 0.3).toFixed(2)}px, ${(state.my * 0.3).toFixed(2)}px, 0)`;
+        mainRef.current.style.boxShadow = `0 ${(12 + easedShrink * 20).toFixed(0)}px ${(30 + easedShrink * 40).toFixed(0)}px rgba(15, 23, 56, ${alpha.toFixed(3)})`;
+      }
     };
 
-    const onScrollRaf = () => {
-      rafId = requestAnimationFrame(handleScroll);
+    const start = () => {
+      if (isStatic()) {
+        applyStatic();
+        return;
+      }
+      if (!rafId) frame();
+    };
+    const stop = () => {
+      cancelAnimationFrame(rafId);
+      rafId = 0;
     };
 
-    window.addEventListener('scroll', onScrollRaf, { passive: true });
-    handleScroll();
+    const onPointer = (e) => {
+      const g = gridRef.current;
+      if (!g) return;
+      const r = g.getBoundingClientRect();
+      const nx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+      const ny = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+      state.tmx = Math.max(-12, Math.min(12, nx * 12));
+      state.tmy = Math.max(-12, Math.min(12, ny * 12));
+    };
+
+    const onResize = () => {
+      stop();
+      start();
+    };
+
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+    });
+    if (sectionRef.current) io.observe(sectionRef.current);
+
+    window.addEventListener('pointermove', onPointer, { passive: true });
+    window.addEventListener('resize', onResize);
+    start();
 
     return () => {
-      window.removeEventListener('scroll', onScrollRaf);
-      window.removeEventListener('resize', checkViewport);
-      if (rafId) cancelAnimationFrame(rafId);
+      stop();
+      io.disconnect();
+      window.removeEventListener('pointermove', onPointer);
+      window.removeEventListener('resize', onResize);
     };
   }, []);
 
-  const handleMouseMove = (e) => {
-    if (isMobileOrReduced || !gridRef.current) return;
-
-    const rect = gridRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
-    const deltaX = (e.clientX - centerX) / (rect.width / 2);
-    const deltaY = (e.clientY - centerY) / (rect.height / 2);
-
-    setMouseOffset({
-      x: Math.max(-12, Math.min(12, deltaX * 12)),
-      y: Math.max(-12, Math.min(12, deltaY * 12)),
-    });
-  };
-
-  const handleMouseLeave = () => {
-    setMouseOffset({ x: 0, y: 0 });
-  };
-
-  // Helper function to calculate layer opacity and scale based on scroll progress
-  const getLayerItemStyle = (startDelay, endDelay, parallaxFactor = 1) => {
-    if (isMobileOrReduced) {
-      return { opacity: 1, transform: 'scale(1)', visibility: 'visible' };
-    }
-
-    if (scrollProgress < startDelay) {
-      return { opacity: 0, transform: 'scale(0.2) translateZ(-60px)', visibility: 'hidden' };
-    }
-
-    const range = endDelay - startDelay;
-    const rawRatio = (scrollProgress - startDelay) / range;
-    const ratio = Math.min(Math.max(rawRatio, 0), 1);
-
-    // Easing cubic curve
-    const eased = Math.sin((ratio * Math.PI) / 2);
-
-    const opacity = eased;
-    const scale = 0.2 + eased * 0.8;
-    const mx = mouseOffset.x * parallaxFactor;
-    const my = mouseOffset.y * parallaxFactor;
-
-    return {
-      opacity,
-      transform: `scale(${scale}) translate3d(${mx}px, ${my}px, 0)`,
-      visibility: opacity > 0.01 ? 'visible' : 'hidden',
-      transition: 'transform 0.15s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.15s ease-out',
-    };
-  };
-
-  // Main center image scaling calculation: 100vw/100vh -> grid slot size
-  const getMainCenterStyle = () => {
-    if (isMobileOrReduced) {
-      return {
-        width: '100%',
-        height: '100%',
-        transform: 'none',
-        borderRadius: '20px',
-      };
-    }
-
-    // Shrink center image smoothly from full-screen to grid frame between 0 and 0.8 progress
-    const shrinkRatio = Math.min(scrollProgress / 0.8, 1);
-    const easedShrink = 1 - Math.pow(1 - shrinkRatio, 3); // easeOutCubic
-
-    const widthVw = 95 - easedShrink * 74; // 95vw -> ~21vw grid cell
-    const heightVh = 92 - easedShrink * 66; // 92vh -> ~26vh grid cell
-    const borderRadius = 12 + easedShrink * 16; // 12px -> 28px
-    const shadowAlpha = 0.15 + easedShrink * 0.2;
-
-    const mx = mouseOffset.x * 0.3;
-    const my = mouseOffset.y * 0.3;
-
-    return {
-      width: `${widthVw}vw`,
-      height: `${heightVh}vh`,
-      borderRadius: `${borderRadius}px`,
-      transform: `translate3d(${mx}px, ${my}px, 0)`,
-      boxShadow: `0 ${12 + easedShrink * 20}px ${30 + easedShrink * 40}px rgba(15, 23, 56, ${shadowAlpha})`,
-      transition: 'width 0.12s cubic-bezier(0.22, 1, 0.36, 1), height 0.12s cubic-bezier(0.22, 1, 0.36, 1), border-radius 0.12s ease',
-    };
-  };
-
-  // Title panel reveal opacity
-  const titleOpacity = isMobileOrReduced ? 1 : Math.min(Math.max((scrollProgress - 0.3) / 0.5, 0), 1);
-
   return (
-    <section
-      ref={sectionRef}
-      className="photo-scroll-section"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
+    <section ref={sectionRef} className="photo-scroll-section">
       <div className="photo-scroll-sticky">
         {/* OVERLAY HEADING */}
         <div
+          ref={headerRef}
           className="photo-scroll-header"
-          style={{
-            opacity: titleOpacity,
-            transform: isMobileOrReduced ? 'none' : `translate3d(0, ${(1 - titleOpacity) * 30}px, 0)`,
-            transition: 'opacity 0.2s ease-out, transform 0.2s ease-out',
-          }}
+          style={{ opacity: 0, transform: 'translate3d(0, 30px, 0)' }}
         >
           <span className="photo-scroll-badge">
             <span className="badge-dot"></span> CIATN CLINICAL JOURNAL
@@ -309,36 +312,15 @@ export default function PhotoScrollGallery() {
 
         {/* 5-COLUMN x 3-ROW GALLERY GRID */}
         <div ref={gridRef} className="photo-scroll-grid">
-          {/* LAYER 1: OUTER 6 IMAGES */}
-          {GALLERY_LAYERS.layer1Outer.map((item) => (
+          {CARDS.map((item) => (
             <div
               key={item.id}
-              className={`photo-card photo-card-outer ${item.gridArea}`}
-              style={getLayerItemStyle(item.startDelay, item.endDelay, 1.2)}
-            >
-              <Image src={item.src} alt={item.alt} fill sizes="20vw" className="photo-img" />
-              <div className="photo-card-tag">{item.label}</div>
-            </div>
-          ))}
-
-          {/* LAYER 2: INNER 6 IMAGES */}
-          {GALLERY_LAYERS.layer2Inner.map((item) => (
-            <div
-              key={item.id}
-              className={`photo-card photo-card-inner ${item.gridArea}`}
-              style={getLayerItemStyle(item.startDelay, item.endDelay, 0.8)}
-            >
-              <Image src={item.src} alt={item.alt} fill sizes="20vw" className="photo-img" />
-              <div className="photo-card-tag">{item.label}</div>
-            </div>
-          ))}
-
-          {/* LAYER 3: CENTER TOP & BOTTOM 2 IMAGES */}
-          {GALLERY_LAYERS.layer3Center.map((item) => (
-            <div
-              key={item.id}
-              className={`photo-card photo-card-center-support ${item.gridArea}`}
-              style={getLayerItemStyle(item.startDelay, item.endDelay, 0.5)}
+              ref={(el) => {
+                if (el) cardRefs.current.set(item.id, el);
+                else cardRefs.current.delete(item.id);
+              }}
+              className={`photo-card photo-card-${item.kind} ${item.gridArea}`}
+              style={HIDDEN_STYLE}
             >
               <Image src={item.src} alt={item.alt} fill sizes="20vw" className="photo-img" />
               <div className="photo-card-tag">{item.label}</div>
@@ -347,7 +329,11 @@ export default function PhotoScrollGallery() {
 
           {/* MAIN CENTER SCALER IMAGE (POSITION 15) */}
           <div className="photo-card-main-wrapper col3-row2">
-            <div className="photo-card-main" style={getMainCenterStyle()}>
+            <div
+              ref={mainRef}
+              className="photo-card-main"
+              style={{ width: '95vw', height: '92vh', borderRadius: '12px' }}
+            >
               <Image
                 src={GALLERY_LAYERS.mainCenter.src}
                 alt={GALLERY_LAYERS.mainCenter.alt}

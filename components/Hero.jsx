@@ -1,9 +1,11 @@
 import Image from 'next/image';
 import Counter from './Counter';
+import HeroScene from './three/HeroScene';
 
 export default function Hero() {
   return (
     <section className="hero">
+      <HeroScene />
       <div className="wrap hero-grid">
         <div>
           <span className="hero-eyebrow">
