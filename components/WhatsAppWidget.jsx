@@ -25,13 +25,21 @@ const COURSES = [
   'PG Diploma in Clinical Cosmetology (PGDCC)',
 ];
 
+/* ─── Quick inquiry topics for Step 3 (Option B) ─────── */
+const QUICK_TOPICS = [
+  'Fee Structure',
+  'Batch Schedule',
+  'Syllabus & Modules',
+  'Hands-on Training',
+  'Certification & Eligibility',
+];
+
 /* ─── Multi-step form steps ─────────────────────────── */
 const STEPS = ['name', 'phone', 'course', 'message', 'summary'];
 
 export default function WhatsAppWidget() {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
-  // form stores all collected values directly and synchronously
   const [form, setForm] = useState({ name: '', phone: '', course: 'General Inquiry', message: '' });
   const [inputVal, setInputVal] = useState('');
   const [error, setError] = useState('');
@@ -39,6 +47,30 @@ export default function WhatsAppWidget() {
   const [waUrl, setWaUrl] = useState('');
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
+
+  /* restore draft state from sessionStorage on mount (no database required) */
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem('ciatn_wa_widget');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.form) setForm(parsed.form);
+        if (typeof parsed.step === 'number' && parsed.step < STEPS.length) {
+          setStep(parsed.step);
+          if (STEPS[parsed.step] === 'name') setInputVal(parsed.form?.name || '');
+          if (STEPS[parsed.step] === 'phone') setInputVal(parsed.form?.phone || '');
+          if (STEPS[parsed.step] === 'message') setInputVal(parsed.form?.message || '');
+        }
+      }
+    } catch (_) { }
+  }, []);
+
+  /* sync draft state to sessionStorage */
+  useEffect(() => {
+    try {
+      sessionStorage.setItem('ciatn_wa_widget', JSON.stringify({ form, step }));
+    } catch (_) { }
+  }, [form, step]);
 
   /* scroll to bottom whenever content changes */
   useEffect(() => {
@@ -52,20 +84,26 @@ export default function WhatsAppWidget() {
     }
   }, [open, step, submitted]);
 
-  /* reset everything when widget closes */
+  /* closing the widget preserves state in memory and sessionStorage */
   function handleClose() {
     setOpen(false);
+  }
+
+  /* explicit reset to start fresh */
+  function handleReset() {
     setStep(0);
     setForm({ name: '', phone: '', course: 'General Inquiry', message: '' });
     setInputVal('');
     setError('');
     setSubmitted(false);
     setWaUrl('');
+    try {
+      sessionStorage.removeItem('ciatn_wa_widget');
+    } catch (_) { }
   }
 
   /* ── Validation ─────────────────────────────────── */
   function validate(currentStep) {
-    // name & phone use inputVal; course/message/summary always pass
     if (currentStep === 'name') {
       if (!inputVal.trim()) { setError('Please enter your name.'); return false; }
     }
@@ -78,26 +116,33 @@ export default function WhatsAppWidget() {
   }
 
   /* ── Advance step ─────────────────────────────────── */
-  function handleNext() {
+  function handleNext(overrideMessage) {
     const current = STEPS[step];
     if (!validate(current)) return;
 
-    // Commit inputVal into form for text-based steps.
-    // NOTE: course step writes directly to form.course via onChange (no inputVal).
     if (current === 'name') {
       setForm(f => ({ ...f, name: inputVal.trim() }));
+      setInputVal(form.phone || '');
     } else if (current === 'phone') {
       setForm(f => ({ ...f, phone: inputVal.trim() }));
+      setInputVal(form.message || '');
     } else if (current === 'message') {
-      setForm(f => ({ ...f, message: inputVal.trim() }));
+      const msg = typeof overrideMessage === 'string' ? overrideMessage : inputVal.trim();
+      setForm(f => ({ ...f, message: msg }));
+      setInputVal('');
     }
-    // course is already in form.course from the select's onChange handler
 
+    setStep(s => s + 1);
+  }
+
+  /* ── Quick topic select handler ──────────────────── */
+  function handleTopicSelect(topic) {
+    setForm(f => ({ ...f, message: topic }));
     setInputVal('');
     setStep(s => s + 1);
   }
 
-  /* ── Build WhatsApp URL ─────────────────────────── */
+  /* ── Build clean WhatsApp URL ───────────────────── */
   function buildUrl(data) {
     const { name, phone, course, message } = data;
     const inquiryType =
@@ -106,15 +151,15 @@ export default function WhatsAppWidget() {
         : 'Course Inquiry from Website';
 
     const text =
-      `🏛️ *CIATN INSTITUTE*\n` +
-      `━━━━━━━━━━━━━━━━━━\n` +
-      `📌 *${inquiryType}*\n\n` +
-      `👤 *Customer Name:* ${name}\n` +
-      `📱 *Customer Mobile:* ${phone}\n` +
-      `📚 *Interested Course:* ${course}\n` +
-      `💬 *Message:* ${message || 'Not provided'}\n` +
-      `━━━━━━━━━━━━━━━━━━\n` +
-      `_Sent via CIATN Institute Website_`;
+      `CIATN INSTITUTE\n` +
+      `--------------------\n` +
+      `${inquiryType}\n\n` +
+      `Customer Name: ${name}\n` +
+      `Customer Mobile: ${phone}\n` +
+      `Interested Course: ${course}\n` +
+      (message ? `Inquiry Topic: ${message}\n` : '') +
+      `--------------------\n` +
+      `Inquiry from : Website`;
 
     return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`;
   }
@@ -124,24 +169,21 @@ export default function WhatsAppWidget() {
     const url = buildUrl(form);
     setWaUrl(url);
     const win = window.open(url, '_blank', 'noopener,noreferrer');
-    // If popup was blocked, win will be null — show the fallback link
     if (win) {
       setSubmitted(true);
     } else {
-      // popup blocked — show fallback link in chat
       setSubmitted(true);
     }
   }
 
   /* ── Chat bubbles to render per step ───────────────── */
   function renderBubbles() {
-    const { name } = form;
     const bubbles = [];
 
     /* Step 0 always shows welcome */
     bubbles.push(
       <ChatBubble key="welcome" from="ciatn">
-        Hi there! 👋 Welcome to <strong>CIATN Institute</strong>. I'm here to help with course inquiries and bookings.
+        Hi there! 👋 Welcome to <strong>CIATN Institute</strong>. I&apos;m here to help with course inquiries and bookings.
       </ChatBubble>
     );
     bubbles.push(
@@ -154,7 +196,7 @@ export default function WhatsAppWidget() {
       bubbles.push(<ChatBubble key="user-name" from="user">{form.name}</ChatBubble>);
       bubbles.push(
         <ChatBubble key="ask-phone" from="ciatn">
-          Nice to meet you, <strong>{form.name}</strong>! 😊 Could you share your mobile number?
+          Nice to meet you, <strong>{form.name}</strong>! Could you share your mobile number?
         </ChatBubble>
       );
     }
@@ -170,28 +212,28 @@ export default function WhatsAppWidget() {
       bubbles.push(<ChatBubble key="user-course" from="user">{form.course}</ChatBubble>);
       bubbles.push(
         <ChatBubble key="ask-message" from="ciatn">
-          Do you have any specific questions or requirements? <em>(Optional — tap Skip to continue)</em>
+          What would you like to know about <strong>{form.course}</strong>? Tap a quick topic below or type your question.
         </ChatBubble>
       );
     }
     if (step >= 4) {
-      bubbles.push(<ChatBubble key="user-message" from="user">{form.message || '(No message)'}</ChatBubble>);
+      bubbles.push(<ChatBubble key="user-message" from="user">{form.message || '(General Course Inquiry)'}</ChatBubble>);
       bubbles.push(
         <ChatBubble key="summary" from="ciatn">
-          <strong>Here&apos;s a summary of your inquiry:</strong><br />
-          👤 <strong>Name:</strong> {form.name}<br />
-          📱 <strong>Phone:</strong> {form.phone}<br />
-          📚 <strong>Course:</strong> {form.course}<br />
-          {form.message && <span>💬 <strong>Message:</strong> {form.message}<br /></span>}
+          <strong>Here is a summary of your inquiry:</strong><br />
+          Name: {form.name}<br />
+          Phone: {form.phone}<br />
+          Course: {form.course}<br />
+          Inquiry: {form.message || 'General Information'}<br />
           <br />
-          Tap <strong>Send on WhatsApp</strong> to connect with us! We typically respond within a few minutes. 🚀
+          Please review your details above. Tap <strong>Proceed to WhatsApp</strong> to connect with our team, or <strong>Edit</strong> to make changes.
         </ChatBubble>
       );
     }
     if (submitted) {
       bubbles.push(
         <ChatBubble key="done" from="ciatn">
-          ✅ WhatsApp is opening in a new tab. Please press <strong>Send</strong> there to complete your inquiry. We look forward to speaking with you! 🙏
+          WhatsApp is opening in a new tab. Please press <strong>Send</strong> there to complete your inquiry. We look forward to speaking with you!
           {waUrl && (
             <div style={{ marginTop: '8px' }}>
               <a
@@ -224,9 +266,13 @@ export default function WhatsAppWidget() {
               ref={inputRef}
               value={form.course}
               onChange={e => {
-                // Write directly to form.course — no intermediate inputVal.
-                // This is synchronous so handleNext() will always read the correct value.
                 setForm(f => ({ ...f, course: e.target.value }));
+              }}
+              onKeyDown={e => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleNext();
+                }
               }}
               style={styles.select}
               aria-label="Select course"
@@ -234,16 +280,31 @@ export default function WhatsAppWidget() {
               {COURSES.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
             <button
-              onClick={handleNext}
+              onClick={() => handleNext()}
               style={styles.sendBtn}
-              aria-label="Send"
+              aria-label="Confirm Course"
+              title="Next step"
             >
               <SendIcon />
             </button>
           </div>
-          <p style={{ margin: '4px 0 0', fontSize: '11px', color: '#555', paddingLeft: '4px' }}>
-            Select a course then tap ➤
-          </p>
+          <div style={styles.courseActionsRow}>
+            <button
+              type="button"
+              onClick={() => { setStep(1); setInputVal(form.phone || ''); }}
+              style={styles.backLinkBtn}
+            >
+              ← Edit Phone
+            </button>
+            <button
+              type="button"
+              onClick={() => handleNext()}
+              style={styles.courseConfirmBtn}
+              aria-label="Confirm Course Selection"
+            >
+              Confirm Course →
+            </button>
+          </div>
         </div>
       );
     }
@@ -251,53 +312,115 @@ export default function WhatsAppWidget() {
     if (current === 'message') {
       return (
         <div style={styles.inputCol}>
+          <div style={styles.chipsContainer}>
+            {QUICK_TOPICS.map(topic => (
+              <button
+                key={topic}
+                type="button"
+                onClick={() => handleTopicSelect(topic)}
+                style={styles.chipBtn}
+              >
+                {topic}
+              </button>
+            ))}
+          </div>
           <div style={styles.inputRow}>
-            <textarea
+            <input
               ref={inputRef}
+              type="text"
               value={inputVal}
               onChange={e => setInputVal(e.target.value)}
-              placeholder="Type your message… (optional)"
-              rows={2}
-              style={{ ...styles.textInput, resize: 'none' }}
-              aria-label="Message"
-              onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleNext(); } }}
+              placeholder="Or type a question… (optional)"
+              style={styles.textInput}
+              aria-label="Inquiry or question"
+              onKeyDown={e => { if (e.key === 'Enter') handleNext(); }}
+              maxLength={120}
             />
-            <button onClick={handleNext} style={styles.sendBtn} aria-label="Send">
+            <button onClick={() => handleNext()} style={styles.sendBtn} aria-label="Send">
               <SendIcon />
             </button>
           </div>
-          <button onClick={handleNext} style={styles.skipBtn}>Skip →</button>
+          <div style={styles.courseActionsRow}>
+            <button
+              type="button"
+              onClick={() => { setStep(2); }}
+              style={styles.backLinkBtn}
+            >
+              ← Edit Course
+            </button>
+            <button
+              type="button"
+              onClick={() => handleNext('')}
+              style={styles.skipBtn}
+            >
+              Skip →
+            </button>
+          </div>
         </div>
       );
     }
 
     if (current === 'summary') {
       return (
-        <div style={styles.submitRow}>
-          <button onClick={handleSubmit} style={styles.whatsappSubmitBtn} aria-label="Continue to WhatsApp">
+        <div style={styles.summaryActionsCol}>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            style={styles.whatsappSubmitBtn}
+            aria-label="Proceed to WhatsApp"
+          >
             <WAIcon size={18} color="#fff" />
-            Continue to WhatsApp
+            Proceed to WhatsApp →
           </button>
+          <div style={styles.summarySubActions}>
+            <button
+              type="button"
+              onClick={() => { setStep(0); setInputVal(form.name || ''); }}
+              style={styles.editBtn}
+              aria-label="Edit Details"
+            >
+              ✏️ Edit Details
+            </button>
+            <button
+              type="button"
+              onClick={handleReset}
+              style={styles.restartBtn}
+              aria-label="Start over"
+            >
+              Restart
+            </button>
+          </div>
         </div>
       );
     }
 
     return (
-      <div style={styles.inputRow}>
-        <input
-          ref={inputRef}
-          type={current === 'phone' ? 'tel' : 'text'}
-          value={inputVal}
-          onChange={e => setInputVal(e.target.value)}
-          placeholder={current === 'name' ? 'Your full name…' : 'Your mobile number…'}
-          style={styles.textInput}
-          aria-label={current === 'name' ? 'Your name' : 'Mobile number'}
-          onKeyDown={e => { if (e.key === 'Enter') handleNext(); }}
-          maxLength={current === 'phone' ? 15 : 60}
-        />
-        <button onClick={handleNext} style={styles.sendBtn} aria-label="Send">
-          <SendIcon />
-        </button>
+      <div style={styles.inputCol}>
+        <div style={styles.inputRow}>
+          <input
+            ref={inputRef}
+            type={current === 'phone' ? 'tel' : 'text'}
+            value={inputVal}
+            onChange={e => setInputVal(e.target.value)}
+            placeholder={current === 'name' ? 'Your full name…' : 'Your 10-digit mobile number…'}
+            style={styles.textInput}
+            aria-label={current === 'name' ? 'Your name' : 'Mobile number'}
+            onKeyDown={e => { if (e.key === 'Enter') handleNext(); }}
+            maxLength={current === 'phone' ? 15 : 60}
+          />
+          <button onClick={() => handleNext()} style={styles.sendBtn} aria-label="Send">
+            <SendIcon />
+          </button>
+        </div>
+        {current === 'phone' && (
+          <button
+            type="button"
+            onClick={() => { setStep(0); setInputVal(form.name || ''); }}
+            style={styles.backLinkBtn}
+          >
+            ← Edit Name
+          </button>
+        )}
       </div>
     );
   }
@@ -503,7 +626,7 @@ const styles = {
     height: '7px',
     borderRadius: '50%',
     background: '#25d366',
-    boxShadow: '0 0 0 2px rgba(255,255,255,0.5)',
+    boxShadow: '0 0 0 0px rgba(255,255,255,0.5)',
   },
   closeBtn: {
     background: 'rgba(255,255,255,0.15)',
@@ -589,6 +712,7 @@ const styles = {
   },
   textInput: {
     flex: 1,
+    minWidth: 0,
     padding: '9px 12px',
     borderRadius: '24px',
     border: '1.5px solid #ddd',
@@ -601,6 +725,8 @@ const styles = {
   },
   select: {
     flex: 1,
+    minWidth: 0,
+    width: '100%',
     padding: '9px 12px',
     borderRadius: '24px',
     border: '1.5px solid #ddd',
@@ -610,6 +736,40 @@ const styles = {
     color: '#1a1a1a',
     fontFamily: 'inherit',
     cursor: 'pointer',
+  },
+  chipsContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '6px',
+    padding: '2px 0 4px',
+  },
+  chipBtn: {
+    background: '#fff',
+    border: '1px solid #128c7e',
+    borderRadius: '16px',
+    color: '#075e54',
+    fontSize: '11.5px',
+    fontWeight: 600,
+    padding: '5px 10px',
+    cursor: 'pointer',
+    transition: 'all 0.15s ease',
+    whiteSpace: 'nowrap',
+    boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+  },
+  courseConfirmBtn: {
+    background: 'linear-gradient(135deg, #25d366 0%, #128c7e 100%)',
+    border: 'none',
+    borderRadius: '20px',
+    color: '#fff',
+    fontSize: '12.5px',
+    fontWeight: 600,
+    padding: '7px 14px',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    boxShadow: '0 2px 6px rgba(37,211,102,0.3)',
   },
   sendBtn: {
     width: '40px',
@@ -636,6 +796,58 @@ const styles = {
     fontWeight: 600,
     textDecoration: 'underline',
     padding: '2px 4px',
+  },
+  summaryActionsCol: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+    width: '100%',
+  },
+  summarySubActions: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    padding: '0 4px',
+  },
+  editBtn: {
+    background: '#fff',
+    border: '1px solid #128c7e',
+    borderRadius: '16px',
+    color: '#075e54',
+    fontSize: '12px',
+    fontWeight: 600,
+    padding: '5px 12px',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '4px',
+  },
+  restartBtn: {
+    background: 'none',
+    border: 'none',
+    color: '#666',
+    fontSize: '11.5px',
+    textDecoration: 'underline',
+    cursor: 'pointer',
+    padding: '4px',
+  },
+  backLinkBtn: {
+    alignSelf: 'flex-start',
+    background: 'none',
+    border: 'none',
+    color: '#075e54',
+    fontSize: '11.5px',
+    fontWeight: 600,
+    cursor: 'pointer',
+    padding: '2px 4px',
+  },
+  courseActionsRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: '8px',
+    width: '100%',
   },
   submitRow: {
     display: 'flex',
