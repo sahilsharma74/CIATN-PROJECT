@@ -3157,6 +3157,15 @@ footer .flinks a:hover {
   pointer-events: none;
 }
 
+.contact-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
 .contact-hero-content {
   position: relative;
   max-width: 720px;
@@ -3174,6 +3183,23 @@ footer .flinks a:hover {
   font-size: 17.5px;
   line-height: 1.65;
   max-width: 58ch;
+}
+
+.contact-hero-image-wrapper {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  background: var(--navy);
+  aspect-ratio: 4 / 3;
+}
+
+.contact-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
 }
 
 /* Main Contact Section & Layout */
@@ -3455,6 +3481,13 @@ footer .flinks a:hover {
   .contact-main-grid {
     grid-template-columns: 1fr;
     gap: 48px;
+  }
+}
+
+@media (max-width: 900px) {
+  .contact-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
   }
 }
 
@@ -5633,6 +5666,64 @@ div[id],
   :is(.program-card, .why-item, .course-card, .ns-recognition-card, .contact-info-card, .stat-card)::after {
     display: none;
   }
+}
+
+/* ==========================================================================
+   WHATSAPP WIDGET ANIMATIONS
+   ========================================================================== */
+
+@keyframes wa-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  70% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+@keyframes wa-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* FAB hover/focus */
+button[aria-label="Open WhatsApp chat with CIATN Institute"]:hover,
+button[aria-label="Open WhatsApp chat with CIATN Institute"]:focus-visible {
+  transform: scale(1.08);
+  box-shadow: 0 6px 28px rgba(37, 211, 102, 0.65) !important;
+  outline: 3px solid rgba(37, 211, 102, 0.4);
+  outline-offset: 2px;
+}
+
+/* Send/submit button hover */
+button[aria-label="Send"]:hover,
+button[aria-label="Send on WhatsApp"]:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.55) !important;
+}
+
+/* Input focus ring */
+.wa-input:focus,
+.wa-select:focus {
+  border-color: #25d366 !important;
+  box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.2) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes wa-pulse { from, to { opacity: 0; } }
+  @keyframes wa-slide-up { from, to { opacity: 1; transform: none; } }
 }
 
 

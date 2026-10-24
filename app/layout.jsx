@@ -1,6 +1,7 @@
 import { Inter, Fraunces, Caveat } from 'next/font/google';
 import './globals.css';
 import SiteMotion3D from '@/components/three/SiteMotion3D';
+import WhatsAppWidget from '@/components/WhatsAppWidget';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
       <body>
         <SiteMotion3D />
         {children}
+        <WhatsAppWidget />
       </body>
     </html>
   );

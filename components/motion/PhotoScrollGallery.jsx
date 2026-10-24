@@ -81,7 +81,7 @@ const GALLERY_LAYERS = {
     },
     {
       id: 'inner-2',
-      src: '/assets/hero_treatment.webp',
+      src: '/assets/treatment.webp',
       alt: 'CIATN Advanced Training Facility',
       gridArea: 'col4-row1',
       label: 'Clinical Facility',
@@ -90,7 +90,7 @@ const GALLERY_LAYERS = {
     },
     {
       id: 'inner-3',
-      src: '/assets/nsdc_certificate.webp',
+      src: '/assets/training.webp',
       alt: 'Facial Aesthetics Masterclass',
       gridArea: 'col2-row2',
       label: 'Facial Aesthetics',
@@ -99,7 +99,7 @@ const GALLERY_LAYERS = {
     },
     {
       id: 'inner-4',
-      src: '/assets/ebvtr_certificate.webp',
+      src: '/assets/hand_on_training.webp',
       alt: 'Clinical Trichology Demonstration',
       gridArea: 'col4-row2',
       label: 'Clinical Trichology',
@@ -129,7 +129,7 @@ const GALLERY_LAYERS = {
   layer3Center: [
     {
       id: 'center-top',
-      src: '/assets/founder_portrait.webp',
+      src: '/assets/wadia_collage.webp',
       alt: 'CIATN Academic Leadership',
       gridArea: 'col3-row1',
       label: 'Academic Leadership',
@@ -138,7 +138,7 @@ const GALLERY_LAYERS = {
     },
     {
       id: 'center-bottom',
-      src: '/assets/pgdc.webp',
+      src: '/assets/consulting.webp',
       alt: 'Hands-on Clinical Practice',
       gridArea: 'col3-row3',
       label: 'Clinical Excellence',
