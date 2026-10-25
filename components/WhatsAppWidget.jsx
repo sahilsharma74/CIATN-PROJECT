@@ -4,6 +4,9 @@ import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 
 /* ─── CIATN Contact ─────────────────────────────────── */
+import { LOCATIONS } from '@/data/locations';
+
+/* ─── CIATN Contact ─────────────────────────────────── */
 const WA_NUMBER = '918669836365'; // +91 86698 36365
 
 /* ─── Course list from data/courses.js ──────────────── */
@@ -35,16 +38,24 @@ const QUICK_TOPICS = [
 ];
 
 /* ─── Multi-step form steps ─────────────────────────── */
-const STEPS = ['name', 'phone', 'course', 'message', 'summary'];
+const STEPS = ['name', 'role', 'phone', 'location', 'course', 'message', 'summary'];
 
 export default function WhatsAppWidget() {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
-  const [form, setForm] = useState({ name: '', phone: '', course: 'General Inquiry', message: '' });
+  const [form, setForm] = useState({
+    name: '',
+    role: '',
+    phone: '',
+    location: '',
+    course: 'General Inquiry',
+    message: '',
+  });
   const [inputVal, setInputVal] = useState('');
   const [error, setError] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [waUrl, setWaUrl] = useState('');
+  const [showLocationList, setShowLocationList] = useState(false);
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -59,6 +70,7 @@ export default function WhatsAppWidget() {
           setStep(parsed.step);
           if (STEPS[parsed.step] === 'name') setInputVal(parsed.form?.name || '');
           if (STEPS[parsed.step] === 'phone') setInputVal(parsed.form?.phone || '');
+          if (STEPS[parsed.step] === 'location') setInputVal(parsed.form?.location || '');
           if (STEPS[parsed.step] === 'message') setInputVal(parsed.form?.message || '');
         }
       }
@@ -92,11 +104,12 @@ export default function WhatsAppWidget() {
   /* explicit reset to start fresh */
   function handleReset() {
     setStep(0);
-    setForm({ name: '', phone: '', course: 'General Inquiry', message: '' });
+    setForm({ name: '', role: '', phone: '', location: '', course: 'General Inquiry', message: '' });
     setInputVal('');
     setError('');
     setSubmitted(false);
     setWaUrl('');
+    setShowLocationList(false);
     try {
       sessionStorage.removeItem('ciatn_wa_widget');
     } catch (_) { }
@@ -111,6 +124,12 @@ export default function WhatsAppWidget() {
       const digits = inputVal.replace(/\D/g, '');
       if (digits.length < 10) { setError('Please enter a valid 10-digit mobile number.'); return false; }
     }
+    if (currentStep === 'location') {
+      if (!inputVal.trim() && !form.location) {
+        setError('Please enter your city or state.');
+        return false;
+      }
+    }
     setError('');
     return true;
   }
@@ -122,16 +141,39 @@ export default function WhatsAppWidget() {
 
     if (current === 'name') {
       setForm(f => ({ ...f, name: inputVal.trim() }));
-      setInputVal(form.phone || '');
+      setInputVal('');
     } else if (current === 'phone') {
       setForm(f => ({ ...f, phone: inputVal.trim() }));
-      setInputVal(form.message || '');
+      setInputVal(form.location || '');
+      setShowLocationList(false);
+    } else if (current === 'location') {
+      const chosenLoc = inputVal.trim() || form.location;
+      setForm(f => ({ ...f, location: chosenLoc }));
+      setInputVal('');
+      setShowLocationList(false);
     } else if (current === 'message') {
       const msg = typeof overrideMessage === 'string' ? overrideMessage : inputVal.trim();
       setForm(f => ({ ...f, message: msg }));
       setInputVal('');
     }
 
+    setStep(s => s + 1);
+  }
+
+  /* ── Role select handler (DR vs Non-DR) ──────────── */
+  function handleRoleSelect(selectedRole) {
+    setForm(f => ({ ...f, role: selectedRole }));
+    setInputVal(form.phone || '');
+    setError('');
+    setStep(s => s + 1);
+  }
+
+  /* ── Location select handler ─────────────────────── */
+  function handleLocationSelect(loc) {
+    setForm(f => ({ ...f, location: loc }));
+    setInputVal('');
+    setShowLocationList(false);
+    setError('');
     setStep(s => s + 1);
   }
 
@@ -144,7 +186,7 @@ export default function WhatsAppWidget() {
 
   /* ── Build clean WhatsApp URL ───────────────────── */
   function buildUrl(data) {
-    const { name, phone, course, message } = data;
+    const { name, role, phone, location, course, message } = data;
     const inquiryType =
       course === 'General Inquiry'
         ? 'General Inquiry from Website'
@@ -155,7 +197,9 @@ export default function WhatsAppWidget() {
       `--------------------\n` +
       `${inquiryType}\n\n` +
       `Customer Name: ${name}\n` +
+      (role ? `Qualification: ${role}\n` : '') +
       `Customer Mobile: ${phone}\n` +
+      (location ? `Location: ${location}\n` : '') +
       `Interested Course: ${course}\n` +
       (message ? `Inquiry Topic: ${message}\n` : '') +
       `--------------------\n` +
@@ -176,6 +220,11 @@ export default function WhatsAppWidget() {
     }
   }
 
+  /* Filter locations based on input */
+  const filteredLocations = inputVal.trim()
+    ? LOCATIONS.filter(item => item.toLowerCase().includes(inputVal.trim().toLowerCase())).slice(0, 8)
+    : LOCATIONS.slice(0, 6);
+
   /* ── Chat bubbles to render per step ───────────────── */
   function renderBubbles() {
     const bubbles = [];
@@ -195,20 +244,36 @@ export default function WhatsAppWidget() {
     if (step >= 1) {
       bubbles.push(<ChatBubble key="user-name" from="user">{form.name}</ChatBubble>);
       bubbles.push(
-        <ChatBubble key="ask-phone" from="ciatn">
-          Nice to meet you, <strong>{form.name}</strong>! Could you share your mobile number?
+        <ChatBubble key="ask-role" from="ciatn">
+          Nice to meet you, <strong>{form.name}</strong>! Are you a practicing Doctor or a Non-Doctor professional?
         </ChatBubble>
       );
     }
     if (step >= 2) {
+      bubbles.push(<ChatBubble key="user-role" from="user">{form.role}</ChatBubble>);
+      bubbles.push(
+        <ChatBubble key="ask-phone" from="ciatn">
+          Thank you! Could you please share your 10-digit mobile number?
+        </ChatBubble>
+      );
+    }
+    if (step >= 3) {
       bubbles.push(<ChatBubble key="user-phone" from="user">{form.phone}</ChatBubble>);
+      bubbles.push(
+        <ChatBubble key="ask-location" from="ciatn">
+          Where are you located? Please type your city or state to select it.
+        </ChatBubble>
+      );
+    }
+    if (step >= 4) {
+      bubbles.push(<ChatBubble key="user-location" from="user">{form.location}</ChatBubble>);
       bubbles.push(
         <ChatBubble key="ask-course" from="ciatn">
           Which course are you interested in?
         </ChatBubble>
       );
     }
-    if (step >= 3) {
+    if (step >= 5) {
       bubbles.push(<ChatBubble key="user-course" from="user">{form.course}</ChatBubble>);
       bubbles.push(
         <ChatBubble key="ask-message" from="ciatn">
@@ -216,13 +281,15 @@ export default function WhatsAppWidget() {
         </ChatBubble>
       );
     }
-    if (step >= 4) {
+    if (step >= 6) {
       bubbles.push(<ChatBubble key="user-message" from="user">{form.message || '(General Course Inquiry)'}</ChatBubble>);
       bubbles.push(
         <ChatBubble key="summary" from="ciatn">
           <strong>Here is a summary of your inquiry:</strong><br />
           Name: {form.name}<br />
+          Qualification: {form.role || 'Not specified'}<br />
           Phone: {form.phone}<br />
+          Location: {form.location || 'Not specified'}<br />
           Course: {form.course}<br />
           Inquiry: {form.message || 'General Information'}<br />
           <br />
@@ -258,6 +325,116 @@ export default function WhatsAppWidget() {
     if (submitted) return null;
     const current = STEPS[step];
 
+    if (current === 'role') {
+      return (
+        <div style={styles.inputCol}>
+          <div style={styles.roleChoiceRow}>
+            <button
+              type="button"
+              onClick={() => handleRoleSelect('Doctor (DR)')}
+              style={styles.roleCardBtn}
+            >
+              <div style={styles.roleTitle}>🩺 Doctor (DR)</div>
+              <div style={styles.roleSubtitle}>MBBS / BDS / BAMS / BHMS / MD</div>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleRoleSelect('Non-Doctor (Non-DR)')}
+              style={styles.roleCardBtn}
+            >
+              <div style={styles.roleTitle}>✨ Non-Doctor (Non-DR)</div>
+              <div style={styles.roleSubtitle}>Aesthetician / Cosmetologist / Salon / Other</div>
+            </button>
+          </div>
+          <button
+            type="button"
+            onClick={() => { setStep(0); setInputVal(form.name || ''); }}
+            style={styles.backLinkBtn}
+          >
+            ← Edit Name
+          </button>
+        </div>
+      );
+    }
+
+    if (current === 'location') {
+      return (
+        <div style={styles.inputCol}>
+          <div style={{ position: 'relative', width: '100%' }}>
+            <div style={styles.inputRow}>
+              <input
+                ref={inputRef}
+                type="text"
+                value={inputVal}
+                onChange={e => {
+                  setInputVal(e.target.value);
+                  setShowLocationList(true);
+                }}
+                onFocus={() => setShowLocationList(true)}
+                placeholder="Type city or state (e.g. Jalgaon)…"
+                style={styles.textInput}
+                aria-label="City or State Location"
+                onKeyDown={e => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (filteredLocations.length > 0 && inputVal.trim()) {
+                      handleLocationSelect(filteredLocations[0]);
+                    } else {
+                      handleNext();
+                    }
+                  }
+                }}
+              />
+              <button
+                onClick={() => {
+                  if (filteredLocations.length > 0 && inputVal.trim()) {
+                    handleLocationSelect(filteredLocations[0]);
+                  } else {
+                    handleNext();
+                  }
+                }}
+                style={styles.sendBtn}
+                aria-label="Select location"
+              >
+                <SendIcon />
+              </button>
+            </div>
+
+            {showLocationList && (
+              <div style={styles.locationDropdown}>
+                {filteredLocations.map(loc => (
+                  <button
+                    key={loc}
+                    type="button"
+                    onMouseDown={() => handleLocationSelect(loc)}
+                    style={styles.locationDropdownItem}
+                  >
+                    📍 {loc}
+                  </button>
+                ))}
+                {inputVal.trim() && !filteredLocations.some(l => l.toLowerCase() === inputVal.trim().toLowerCase()) && (
+                  <button
+                    type="button"
+                    onMouseDown={() => handleLocationSelect(inputVal.trim())}
+                    style={{ ...styles.locationDropdownItem, fontStyle: 'italic', color: '#128c7e' }}
+                  >
+                    Use &quot;{inputVal.trim()}&quot; as my location
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={() => { setStep(2); setInputVal(form.phone || ''); setShowLocationList(false); }}
+            style={styles.backLinkBtn}
+          >
+            ← Edit Phone
+          </button>
+        </div>
+      );
+    }
+
     if (current === 'course') {
       return (
         <div style={styles.inputCol}>
@@ -291,10 +468,10 @@ export default function WhatsAppWidget() {
           <div style={styles.courseActionsRow}>
             <button
               type="button"
-              onClick={() => { setStep(1); setInputVal(form.phone || ''); }}
+              onClick={() => { setStep(3); setInputVal(form.location || ''); }}
               style={styles.backLinkBtn}
             >
-              ← Edit Phone
+              ← Edit Location
             </button>
             <button
               type="button"
@@ -343,7 +520,7 @@ export default function WhatsAppWidget() {
           <div style={styles.courseActionsRow}>
             <button
               type="button"
-              onClick={() => { setStep(2); }}
+              onClick={() => { setStep(4); }}
               style={styles.backLinkBtn}
             >
               ← Edit Course
@@ -415,10 +592,10 @@ export default function WhatsAppWidget() {
         {current === 'phone' && (
           <button
             type="button"
-            onClick={() => { setStep(0); setInputVal(form.name || ''); }}
+            onClick={() => { setStep(1); }}
             style={styles.backLinkBtn}
           >
-            ← Edit Name
+            ← Edit Qualification
           </button>
         )}
       </div>
@@ -877,5 +1054,67 @@ const styles = {
     padding: '4px 10px 0',
     margin: 0,
     background: '#f0f0f0',
+  },
+  /* Role step (DR vs Non-DR) */
+  roleChoiceRow: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+    width: '100%',
+  },
+  roleCardBtn: {
+    background: '#fff',
+    border: '1.5px solid #128c7e',
+    borderRadius: '12px',
+    padding: '9px 12px',
+    cursor: 'pointer',
+    textAlign: 'left',
+    transition: 'all 0.15s ease',
+    boxShadow: '0 2px 5px rgba(18, 140, 126, 0.08)',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '2px',
+    width: '100%',
+  },
+  roleTitle: {
+    color: '#075e54',
+    fontSize: '13px',
+    fontWeight: 700,
+  },
+  roleSubtitle: {
+    color: '#666',
+    fontSize: '11px',
+    lineHeight: 1.3,
+  },
+  /* Location dropdown */
+  locationDropdown: {
+    position: 'absolute',
+    bottom: '100%',
+    left: 0,
+    right: 0,
+    marginBottom: '6px',
+    background: '#fff',
+    border: '1px solid #128c7e',
+    borderRadius: '12px',
+    maxHeight: '160px',
+    overflowY: 'auto',
+    boxShadow: '0 4px 16px rgba(0,0,0,0.14)',
+    zIndex: 10,
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  locationDropdownItem: {
+    padding: '8px 12px',
+    textAlign: 'left',
+    background: 'none',
+    border: 'none',
+    borderBottom: '1px solid #f0f0f0',
+    fontSize: '12.5px',
+    color: '#222',
+    cursor: 'pointer',
+    width: '100%',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
 };
