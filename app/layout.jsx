@@ -22,6 +22,7 @@ const caveat = Caveat({
 });
 
 export const metadata = {
+  metadataBase: new URL('https://www.ciatn.co.in'),
   title: 'CIATN Institute — Clinical Cosmetology, Trichology & Aesthetic Medicine Training, Pune',
   description: 'CIATN Institute builds skilled, ethically grounded aesthetic professionals through hands-on clinical training, government-aligned curricula, and mentorship from a working cosmetic physician in Pune.',
   keywords: ['Clinical Cosmetology', 'Trichology', 'Aesthetic Medicine Training', 'Pune Cosmetology Institute', 'PGDCC', 'Laser Training'],
