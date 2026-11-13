@@ -14,7 +14,7 @@ export default function CoursesClosingCta() {
             <Link href="/book-a-demo" className="btn btn-primary">
               Book a Demo
             </Link>
-            <Link href="/contact" className="btn btn-outline" style={{ color: 'var(--navy-deep)', borderColor: 'var(--navy)' }}>
+            <Link href="/contact" className="btn btn-outline" style={{ color: 'var(--white)', borderColor: 'var(--navy)' }}>
               Contact Us
             </Link>
           </div>

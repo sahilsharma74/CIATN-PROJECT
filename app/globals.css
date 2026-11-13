@@ -5735,3 +5735,176 @@ button[aria-label="Send on WhatsApp"]:hover {
 
 
 
+
+
+/* ==========================================================================
+   Lead Enquiry Popup Modal (CIATN Design System)
+   ========================================================================== */
+.lead-popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(10, 17, 40, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: leadFadeIn 0.25s ease-out forwards;
+}
+
+.lead-popup-card {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid var(--line, #e2e8f0);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 32px 28px;
+  box-shadow: 0 24px 60px rgba(10, 17, 40, 0.25);
+  animation: leadSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.lead-popup-close {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  line-height: 1;
+  color: var(--ink-soft, #64748b);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.lead-popup-close:hover {
+  color: var(--navy-deep, #0a1128);
+  background: var(--paper, #f8fafc);
+}
+
+.lead-popup-header {
+  margin-bottom: 20px;
+  padding-right: 24px;
+}
+
+.lead-popup-header .eyebrow {
+  display: inline-block;
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.lead-popup-header h3 {
+  font-size: 22px;
+  line-height: 1.25;
+  color: var(--navy-deep, #0a1128);
+  margin-bottom: 6px;
+}
+
+.lead-popup-header p {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink-soft, #64748b);
+}
+
+.lead-popup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.lead-popup-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.lead-popup-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.lead-popup-field label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--navy-deep, #0a1128);
+}
+
+.lead-popup-field input,
+.lead-popup-field select,
+.lead-popup-field textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--line, #cbd5e1);
+  background: var(--paper, #f8fafc);
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--ink, #1e293b);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.lead-popup-field input:focus,
+.lead-popup-field select:focus,
+.lead-popup-field textarea:focus {
+  outline: none;
+  background: #ffffff;
+  border-color: var(--saffron-deep, #e2811f);
+  box-shadow: 0 0 0 3px rgba(226, 129, 31, 0.15);
+}
+
+.lead-popup-field input[aria-invalid='true'],
+.lead-popup-field select[aria-invalid='true'] {
+  border-color: #d93025;
+  background: #fff8f8;
+}
+
+.lead-popup-error-banner {
+  padding: 10px 14px;
+  background: #fdf2f2;
+  border: 1px solid #f8b4b4;
+  color: #9b1c1c;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.lead-popup-submit {
+  width: 100%;
+  padding: 12px 18px;
+  margin-top: 6px;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lead-popup-success {
+  text-align: center;
+  padding: 30px 10px;
+}
+
+@keyframes leadFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes leadSlideUp {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 600px) {
+  .lead-popup-card {
+    padding: 24px 18px;
+  }
+  .lead-popup-row {
+    grid-template-columns: 1fr;
+  }
+}
