@@ -27,6 +27,16 @@ export const metadata = {
   title: 'CIATN Institute — Clinical Cosmetology, Trichology & Aesthetic Medicine Training, Pune',
   description: 'CIATN Institute builds skilled, ethically grounded aesthetic professionals through hands-on clinical training, government-aligned curricula, and mentorship from a working cosmetic physician in Pune.',
   keywords: ['Clinical Cosmetology', 'Trichology', 'Aesthetic Medicine Training', 'Pune Cosmetology Institute', 'PGDCC', 'Laser Training'],
+  icons: {
+    icon: [
+      { url: '/assets/ciatn-logo.webp', type: 'image/webp' },
+      { url: '/favicon.ico' },
+    ],
+    apple: [
+      { url: '/assets/ciatn-logo.webp', type: 'image/webp' },
+    ],
+    shortcut: ['/favicon.ico'],
+  },
 };
 
 export default function RootLayout({ children }) {
